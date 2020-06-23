@@ -21,13 +21,10 @@ class Gmm extends CI_Controller
 	}
 
 
-     function index($data = "jose carlos-34534534")
+     function index()
     {
-    	$params = explode('-', $data);
-
         $this->load->view('header');
-    	$this->load->view('gmm/index',array('name'=> $params[0],
-                                           'poliza' => $params[1]));
+    	$this->load->view('gmm/index');
     	$this->load->view('footer');	
     }
 

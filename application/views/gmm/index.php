@@ -16,11 +16,11 @@
 								<div class="row">
 									<div class="col-sm-4">
 										<input type="text" name="asegurado" class="form-control" id="buscar" placeholder="Nombre de Asegurado" ref="asegurado" @keyup.enter="buscar">
-                    <input type="hidden"  class="form-control" id="name" value="<?php echo $name; ?>">
+                    
 									</div>
 									<div class="col-sm-2">
 										<input type="text" name="noPoliza" class="form-control" id="buscar2" placeholder="Numero de poliza" ref="noPoliza" @keyup.enter="buscar" >
-                     <input type="hidden"  class="form-control" id="poliza" value="<?php echo $poliza; ?>">
+                     
 									</div>
 									<div class="col-sm-2">
 										<input type="text" name="certificado" class="form-control" id="buscar3" placeholder="certificado" ref="certificado" @keyup.enter="buscar" >
