@@ -52,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'login';
 $route['404_override'] = 'home/error404';
 $route['translate_uri_dashes'] = FALSE;
+$route['gmm/(:any)'] = 'Gmm/index/$1';
 
 
                   

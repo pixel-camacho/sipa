@@ -11,15 +11,19 @@
 							
 							<h3><strong><i class="fa fa-medkit"></i>GMM</strong></h3>
 							<hr>
+              <img src="<?php echo base_url('assets/images/load/35.gif'); ?>" id="cargando">
+
 							<br>
 						       <h4>Buscar por:</h4>			
 								<div class="row">
 									<div class="col-sm-4">
 										<input type="text" name="asegurado" class="form-control" id="buscar" placeholder="Nombre de Asegurado" ref="asegurado" @keyup.enter="buscar">
+                    <input type="hidden" id="name" class="form-control" value="<?php echo $nombre; ?>">
                     
 									</div>
 									<div class="col-sm-2">
 										<input type="text" name="noPoliza" class="form-control" id="buscar2" placeholder="Numero de poliza" ref="noPoliza" @keyup.enter="buscar" >
+                    <input type="hidden" id="poliza" class="form-control" value="<?php echo $poliza; ?>">
                      
 									</div>
 									<div class="col-sm-2">
@@ -46,15 +50,16 @@
                                             
 
 
+                                     
                                                   </tr>
                                         			</thead>
                                         			<tbody>
                                         				<tr v-for="poliza in polizas">
-                                        				<td>{{poliza.noPoliza}}<br>
+                                        				<td id="col1">{{poliza.noPoliza}}<br>
                                         				<!--	<span><strong>Sisnova:</strong></span>{{polizas.polizaSisnova}}<br>
                                         					<span><strong>Bienestar: </strong></span>{{polizas.polizaBienestar}} -->
                                         				</td>
-                                        				<td><strong>Certificado: </strong> 
+                                        				<td id="col2"><strong>Certificado: </strong> 
                                                                    {{poliza.certificado}} <br>
                                         				     <strong>Nombre: </strong>
                                                                   {{poliza.asegurado}}</td>
@@ -106,10 +111,12 @@
                                             </tr>
                                             </tfoot>
                                             </div>
+
                                         	
                                     </div>
 						      </div>
                             </div>
+
 						</div>
 					</div>
 				</div>
@@ -126,7 +133,42 @@
 		</div>
 	</div>
 
-	<link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
+	  <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet" />
     <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+	  <script type="text/javascript" src="<?php echo base_url();?>/assets/vue/appvue/appgmm.js"></script>	
+  <script type="text/javascript">
+      
+      $(document).ready( ()=> {
 
-	<script type="text/javascript" src="<?php echo base_url();?>/assets/vue/appvue/appgmm.js"></script>	
+        $('#cargando').hide();
+
+        let name  = $('#name').val();
+        let poliza = $('#poliza').val();
+
+        if(name == '' && poliza == '')
+        {
+          return;
+        }else
+        {
+
+          $.ajax({
+          type: 'POST',
+          url: 'http://190.9.53.22:8484/apiSIPA/gmm/buscarPolizas',
+          data: `asegurado=${name}&noPoliza${poliza}`,
+          dataType: 'json',
+
+          beforeSend: ()=> $('#cargando').show(),
+          complete: ()=> $('#cargando').hide(),
+
+          success: (response)=>
+          {
+              console.log(response);
+          }
+
+
+        })
+  
+        }
+
+         });
+    </script>
