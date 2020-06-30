@@ -25,6 +25,8 @@ v = new Vue({
 			NProgress.start()
 			mostrar = true;
 
+			
+
 			axios.get('http://190.9.53.22:8484/apiSIPA/gmm/buscarPolizas',
 			{
 				params:

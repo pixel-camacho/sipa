@@ -33,17 +33,17 @@ class Gmm extends CI_Controller
 
         $this->load->view('header');
     	$this->load->view('gmm/index',array('nombre' => $data[0],
-                                            'poliza' => $data[1]));
+                                            'poliza' => $data[1] ));
     	$this->load->view('footer');	
     }
 
-    public function buscar()
+   /* public function buscar()
     {
     	$server = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     	$name = explode('/', $server);
 
     	echo 'hola '.$name[3];
-    }
+    }*/
 
 
 

@@ -219,10 +219,6 @@ class Cliente extends CI_Controller {
 	     $this->load->view('cliente/poliza',$data);
 		 $this->load->view('footer');
      }
-    public function boom()
-    {
-        echo 'bien !';
-    }
      
 
      public function upload()
@@ -390,16 +386,22 @@ class Cliente extends CI_Controller {
     {
         $this->load->library('pdf');
 
-      //$cadena = 'dallan camacho';
-     // $codificado = convert_uuencode($cadena);
-
-        
-       //$this->generarQr($codificado,'lock2.png');
-
         $curl_post_data = array('solicitudId' => $solicitudId);
         $url = 'http://190.9.53.22:8484/appsipaapi/cliente/obtenerAsegurados.php';
         $decoded = $this->consultar($url,$curl_post_data);
-    
+
+        if(base_url('assets/images/QR')+$decoded[0]->nombre+'.png' != $decoded[0]->nombre){
+            
+            continue;
+
+         }else{
+
+        $datos = $decoded[0]->nombre.'-'.$decoded[0]->poliza;
+        $codigoQr = 'http://190.9.53.22:8484/sipa/gmm/'.$datos;
+        $this->generarQr($codigoQr,$decoded[0]->nombre.'.png');
+
+         }
+
          $num = count($decoded);
 
          if($num == 1)
@@ -502,8 +504,6 @@ class Cliente extends CI_Controller {
  {
      $this->load->library('pdf');
 
-        
-      //  $this->generarQr('LUIS MANUEL FONG AMBRIZ','LUIS MANUEL FONG AMBRIZ.png');
 
         $curl_post_data = array('solicitudId' => $solicitudId);
         $url = 'http://190.9.53.22:8484/appsipaapi/cliente/obtenerAsegurados.php';

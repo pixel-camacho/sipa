@@ -245,8 +245,8 @@ ul#navigation .print{
   <div id="demo"class="collapse">
     <ul id="lista">
     <li><a  href="<?php echo base_url('cliente/imprimir');?>/<?php echo $solicitudId;?>">Autorizacion</a></li>
-    <li><a  href="<?php echo base_url('cliente/tarjeta');?>/<?php echo $solicitudId;?>">Tarjeta virtual</a></li> 
-    <li><a  href="<?php echo base_url('cliente/letterCard');?>/<?php  echo $solicitudId;?>">Tarjeta física</a></li> 
+    <li><a  href="<?php echo base_url('cliente/tarjeta');?>/<?php echo $solicitudId;?>" target="_blank">Tarjeta virtual</a></li> 
+    <li><a  href="<?php echo base_url('cliente/letterCard');?>/<?php  echo $solicitudId;?>" target="_blank">Tarjeta física</a></li> 
     <li><a >Formato</a></li>
     </ul>
   </div> 

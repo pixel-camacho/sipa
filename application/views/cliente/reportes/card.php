@@ -83,9 +83,11 @@
 				<span id="title">Antiguedad <?php echo $antiguedad ;?> </span>
 			</li>
 		</ul>
-		<?php if ($nombre == "LUIS MANUEL FONG AMBRIZ") { ?>
-		<img id="qr" src="assets/images/QR/lock2.png" alt="noo!">
-	<?php } ?>
+		<?php 
+
+             echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
+           
+		?>
 <?php  } elseif(!$img) {?>
 
 	<style type="text/css">
@@ -144,9 +146,13 @@
 				<span id="title">Antiguedad <?php echo $antiguedad ;?> </span>
 			</li>
 		</ul>
-	 <?php if($nombre == "LUIS MANUEL FONG AMBRIZ") { ?>
-		<img id="qr" src="assets/images/QR/lock2.png" alt="noo!">
-     <?php }?>
+	 <?php 
+         
+      echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
+          
+	 	?>
+	   
+   
 
 <?php } ?>
 
