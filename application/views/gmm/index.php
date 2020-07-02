@@ -154,6 +154,7 @@
                                                       <div class="card-header">
                                                         <h5 id="asegurado"></h5>
                                                         <h5 id="noPoliza"></h5>
+                                                        <h5 id="certificado"></h5>
                                                       </div>
                                                       <div class="card-body">
                                                         <span id="estatus"></span>
@@ -201,7 +202,6 @@
         let img = document.getElementById('imgGmm');
         let beneficiarios =  document.getElementById('beneficiarios');
          
-
         if(name == '' && poliza == '')
         {
           return;
@@ -225,7 +225,7 @@
 
              document.getElementById('asegurado').innerHTML = '<strong> Asegurado: </strong>'+poliza.asegurado;
              document.getElementById('noPoliza').innerHTML = '<strong>Poliza: </strong>'+poliza.noPoliza;
-             //document.getElementById('certificado').innerHTML = 'Certificado: '+poliza.certificado;
+             document.getElementById('certificado').innerHTML = '<strong> Certificado: </strong>'+poliza.certificado;
              if(poliza.clasificacion  == 'Transferido')
              {
               estatus.innerHTML = `<span class="badge badge-primary" style="font-size: 14px; ">Transferido</span>`;

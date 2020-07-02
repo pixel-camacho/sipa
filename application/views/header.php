@@ -235,7 +235,7 @@
                             <div class="collapse" id="auth">
                                 <ul class="nav flex-column sub-menu">
                                     <li class="nav-item">
-                                        <a class="nav-link" href="<?= base_url('/cobranza/') ?>">
+                                    <a class="nav-link" href="<?= base_url('/cobranza/') ?>">
                                             <i class="menu-icon fa fa-search"></i>
                                             <span class="menu-title">Cobranza</span>
                                         </a>
@@ -270,7 +270,13 @@
                                             <span class="menu-title">Documentos</span>
                                         </a>
                                     </li>
-									<!-- <li class="nav-item">
+                                  <!--  <li class="nav-item">
+                                        <a class="nav-link" href="<?= base_url('/reparto') ?>">
+                                            <i class="menu-icon fa fa-motorcycle"></i>
+                                            <span class="menu-title">Reparto</span>
+                                        </a>
+                                    </li>
+-->									<!-- <li class="nav-item">
                                         <a class="nav-link" href="#">
                                             <i class="menu-icon fa fa-bars"></i>
                                             <span class="menu-title">reporte</span>
