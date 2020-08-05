@@ -209,9 +209,9 @@
         {
 
           $.ajax({
-          type: 'POST',
-          url: 'http://190.9.53.22:8484/apiSIPA/gmm/buscarPolizas',
-          data: `asegurado=${name}&noPoliza${poliza}`,
+          type: 'GET',
+          url: 'http://190.9.53.22:8484/apiSIPA/gmm/polizaQr',
+          data: `asegurado=${name}&noPoliza=${poliza}`,
           dataType: 'json',
 
           beforeSend: ()=> $('#cargando').show(),
@@ -219,36 +219,46 @@
 
           success: (response)=>
           {
-            $('#form-search').hide();
 
-             let poliza = response.polizas[0];
+            if(!response){
+              card.innerHTML = '<strong>No exiten resultados</strong>';
+            }
 
-             document.getElementById('asegurado').innerHTML = '<strong> Asegurado: </strong>'+poliza.asegurado;
-             document.getElementById('noPoliza').innerHTML = '<strong>Poliza: </strong>'+poliza.noPoliza;
-             document.getElementById('certificado').innerHTML = '<strong> Certificado: </strong>'+poliza.certificado;
-             if(poliza.clasificacion  == 'Transferido')
+        $('#form-search').hide();
+
+             let poliza = response.polizaQr;
+           
+             document.getElementById('asegurado').innerHTML = '<strong> Asegurado: </strong>'+poliza[0]['asegurado'];
+             document.getElementById('noPoliza').innerHTML = '<strong>Poliza: </strong>'+poliza[0]['noPoliza'];
+             document.getElementById('certificado').innerHTML = '<strong>Antigüedad: </strong>'+poliza[0]['antiguedad'];
+             if(poliza[0]['clasificacion']  == 'Transferido')
              {
               estatus.innerHTML = `<span class="badge badge-primary" style="font-size: 14px; ">Transferido</span>`;
-             }else if(poliza.clasificacion == 'Activo')
+             }else if(poliza[0]['clasificacion'] == 'Activo')
              {
             estatus.innerHTML =  `<span class="badge badge-success" style="font-size: 14px;">Activo</span>`;
              }else{
               estatus.innerHTML = `<span class="badge badge-danger" style="font-size: 14px;"> No transferido</span>`;
              }
-             if(poliza.clasificacion == 'Transferido')
+             if(poliza[0]['clasificacion'] == 'Transferido')
              {
               img.src = "<?php echo base_url('assets/images/latino.png'); ?>";                             
              }else{
               img.src = "<?php echo base_url('assets/images/sisnova.png'); ?>";
              }
-             if(poliza.beneficiario === null){
-              beneficiarios.innerHTML = '<strong> No cuenta con beneficiarios</strong>';
+             if(poliza.length > 1 ){
+
+               let cantidad = poliza.length;
+
+                   for(let $i = 1; $i < cantidad ; $i++)
+                   {
+                    beneficiarios.innerHTML += poliza[$i]['beneficiarios']+'<br>';
+                   }
              }else{
-              beneficiarios.innerHTML = poliza.beneficiario;
+
+                   beneficiarios.innerHTML = '<strong> No cuenta con beneficiarios</strong>'; 
              }
-
              card.show();
-
           }
         });
   

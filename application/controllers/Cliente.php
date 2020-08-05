@@ -12,6 +12,11 @@ class Cliente extends CI_Controller {
             $this->session->set_flashdata('flash_data', 'You don\'t have access! ss');
             return redirect('login');
         }
+
+        if(count($_SESSION['user_id']) > 1){
+            $this->session->set_flashdata('flash_data', 'danger');
+            return redirect('login');
+        }
 		
 
         $this->load->helper('url');
@@ -75,59 +80,7 @@ class Cliente extends CI_Controller {
         $this->load->view('footer');
 		
     }
-   /*  public function poliza1($solicitudId)
-     {  
-        $service_url = "http://190.9.53.22:8484/appsipaapi/detallespoliza1.php";
-        $curl = curl_init($service_url);
-        $curl_post_data =  array('solicitudId' => $solicitudId);
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $curl_post_data);
-        $curl_response = curl_exec($curl);
-
-        if($curl_response === false)
-        {  
-            $info = curl_getinfo($curl);
-            curl_close($curl);
-            die('ocurrio un error al ejecutar curl: '.var_export($info));
-        }
-        curl_close($curl);
-
-        $decoded = json_decode($curl_response);
-
-        $datospoliza1 = array(
-            'asegurado' =>$decoded ->asegurado,
-            'edadAsegurado' =>$decoded ->edadAsegurado,
-            'responsable' =>$decoded ->responsable,
-            'edadResponsable' => $decoded ->edadResponsable,
-            'Agente' => $decoded ->Agente,
-            'estatus' => $decoded ->estatus,
-            'compania' => $decoded ->compania,
-            'producto' => $decoded ->producto,
-            'polizaAnterior' => $decoded ->polizaAnterior,
-            'contratante' =>$decoded ->contratante,
-            'municipio' => $decoded ->municipio,
-            'paquete' => $decoded ->paquete,
-            'periodoinicio' => $decoded ->periodoinicio,
-            'fechaPrimer' => $decoded ->fechaPrimer,
-            'periodo' => $decoded ->periodo,
-            'clave' => $decoded ->clave,
-            'fechaInicio' => $decoded ->fechaInicio,
-            'fechaFin' => $decoded ->fechaFin,
-            'total' => $decoded ->total,
-            'descuento' => $decoded ->descuento,
-            'solicitudId' => $decoded ->solicitudId,
-            'noPoliza' => $decoded ->noPoliza);
-
-        $data = array('solicitudId' => $solicitudId,
-                      'datospoliza1' => $datospoliza1);
-
-        $this->load->view('header');
-        $this->load->view('cliente/poliza',$data);
-        $this->load->view('footer');
-
-     } */
 	
       public function poliza ($solicitudId)
 	  {	  		
@@ -150,36 +103,7 @@ class Cliente extends CI_Controller {
 		   curl_close($curl);
 		   $decoded = json_decode($curl_response);
 		   
-		  /*  $datospoliza = array(
-		         'estatus' =>$decoded[0] ->estatus,
-				 'compania' =>$decoded[0] -> compania,
-				 'noPoliza' => $decoded[0] -> noPoliza,
-				 'producto' => $decoded[0] ->producto,
-				 'fechaInicio' => $decoded[0] ->fechaInicio,
-				 'fechaFin' => $decoded[0] -> fechaFin,
-				 'contratante' => $decoded[0] -> contratante,
-				 'total' => $decoded[0] -> total,
-				 'tipoPeriodo'=> $decoded[0] -> tipoPeriodo,
-				 'clave' => $decoded[0] -> clave,
-				 'descuento' => $decoded[0] -> descuento,
-				 'rfc' => $decoded[0] -> rfc,
-				 'nombre' => $decoded[0] -> nombre,
-				 'apPaterno' => $decoded[0] -> apPaterno,
-				 'apMaterno' => $decoded[0] -> apMaterno,
-				 'edad' => $decoded[0] -> edad,
-				 'rfcResponsable' => $decoded[0] -> rfcResponsable,
-                 'nombreResponsable' => $decoded[0] -> nombreResponsable,
-                 'apPaternoResponsable' => $decoded[0] -> apPaternoResponsable,
-                 'apMaternoResponsable' => $decoded[0] -> apMaternoResponsable,
-				 'edadResponsable' => $decoded[0] -> edadResponsable,
-				 'periodoinicio' => $decoded[0] -> periodoinicio,
-				 'municipio' => $decoded[0] -> municipio,
-				 'fechaPrimer' => $decoded[0] -> fechaPrimer,
-				 'Agente' => $decoded[0] -> Agente,
-				 'paquete' => $decoded[0] -> paquete,
-                 'solicitudIdAnt' => $decoded[0]-> solicitudIdAnt,
-                 'solicitudAnterior' => $decoded[0] -> solicitudAnterior,
-                 'polizaAnterior' => $decoded[0] -> polizaAnterior);*/
+		  
 
 
         $datospoliza = array(
@@ -206,7 +130,8 @@ class Cliente extends CI_Controller {
             'descuento' => $decoded[0] ->descuento,
             'solicitudId' => $decoded[0] ->solicitudId,
             'noPoliza' => $decoded[0] ->noPoliza,
-            'paqueteId' => $decoded[0] ->paqueteId);
+            'paqueteId' => $decoded[0] ->paqueteId,
+            'EstatusReparto'=>$decoded[0]->EstatusReparto);
 
 		 
 		    
@@ -349,6 +274,134 @@ class Cliente extends CI_Controller {
     
     }
 
+    public function constancia ($solicitudId)
+    {
+        $this->load->library('pdf');
+        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
+        $post_data = ['solicitudId' => $solicitudId];
+
+        $curl = curl_init();
+
+                curl_setopt($curl, CURLOPT_URL, $service_url);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+
+        $curl_response = curl_exec($curl);
+
+        if($curl_response === false)
+        {
+
+        $info = curl_getinfo($curl);
+                curl_close($curl);
+                die('error occured during curl exec. Additional: '.var_export($info));
+           }
+                curl_close($curl);
+          
+        $data = json_decode($curl_response, true);
+
+        $constancia = ['data' => $data];
+
+        $this->pdf->generarPdf('cliente/reportes/constancia',$constancia);
+    }
+
+
+    public function autorizacion($solicitudId)
+    {
+        $this->load->library('pdf');
+        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
+        $post_data = ['solicitudId' => $solicitudId];
+
+        $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response = curl_exec($curl);
+
+        if($curl_response === false)
+        {
+            $info = curl_getinfo($curl);
+                    curl_close($curl);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl);
+          
+          $data = json_decode($curl_response, true);
+          $info = ['data' => $data];
+    
+         $this->pdf->generarPdf('cliente/reportes/autorizacion',$info);
+    }
+
+    public function adjunto ($solicitudId)
+    {
+
+       $this->load->library('pdf');
+        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
+        $post_data = ['solicitudId' => $solicitudId];
+
+        $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response = curl_exec($curl);
+
+        if($curl_response === false)
+        {
+            $info = curl_getinfo($curl);
+                    curl_close($curl);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl);
+          
+          $data = json_decode($curl_response, true);
+          $info = ['data' => $data,
+                   'name' => $this->session->name,
+                   'nombre' => $data[0]['irresponsable']];
+
+      $this->pdf->generarPdf('cliente/reportes/adjunto',$info,'Documentos');
+
+    }
+
+    public function pagoViaNomina($solicitudId){
+      $this->load->library('pdf');
+
+       $this->load->library('pdf');
+        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
+        $post_data = ['solicitudId' => $solicitudId];
+
+        $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response = curl_exec($curl);
+
+        if($curl_response === false)
+        {
+            $info = curl_getinfo($curl);
+                    curl_close($curl);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl);
+          
+          $data = json_decode($curl_response, true);
+
+          $info = ['data' => $data,
+                   'cerrador' => $this->session->name];
+
+      $this->pdf->generarPdf('cliente/reportes/pago',$info);
+    }
+
+    
+
     
 
     public function recibo($solicitudId){
@@ -406,90 +459,98 @@ class Cliente extends CI_Controller {
 
          if($num == 1)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
          }else if($num == 2)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
          }else if($num == 3)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
         }else if($num == 4)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
         }elseif($num == 5){
 
-             $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
+             $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
 
         }elseif($num == 6)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
 
         }elseif($num == 7)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
-                                 'nombre6'=> $decoded[6]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
+                                 'nombre6'=> $decoded[6]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
 
 
         }else{
 
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
-                                 'nombre6'=> $decoded[6]->nombre,
-                                 'nombre7'=> $decoded[7]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
+                                 'nombre6'=> $decoded[6]->beneficiario,
+                                 'nombre7'=> $decoded[7]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => true);
         }
@@ -508,101 +569,124 @@ class Cliente extends CI_Controller {
         $curl_post_data = array('solicitudId' => $solicitudId);
         $url = 'http://190.9.53.22:8484/appsipaapi/cliente/obtenerAsegurados.php';
         $decoded = $this->consultar($url,$curl_post_data);
+
+         if(base_url('assets/images/QR')+$decoded[0]->nombre+'.png' != $decoded[0]->nombre){
+            
+            continue;
+
+         }else{
+
+        $datos = $decoded[0]->nombre.'-'.$decoded[0]->poliza;
+        $codigoQr = 'http://190.9.53.22:8484/sipa/gmm/'.$datos;
+        $this->generarQr($codigoQr,$decoded[0]->nombre.'.png');
+
+         }
+
     
          $num = count($decoded);
 
          if($num == 1)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
          }else if($num == 2)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
          }else if($num == 3)
          {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
         }else if($num == 4)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
         }elseif($num == 5){
 
-             $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
+             $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
 
         }elseif($num == 6)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
 
         }elseif($num == 7)
         {
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
-                                 'nombre6'=> $decoded[6]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
+                                 'nombre6'=> $decoded[6]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
 
 
         }else{
 
-            $infoTarjeta = array('nombre' => $decoded[0]->nombre,
-                                 'nombre1'=> $decoded[1]->nombre,
-                                 'nombre2'=> $decoded[2]->nombre,
-                                 'nombre3'=> $decoded[3]->nombre,
-                                 'nombre4'=> $decoded[4]->nombre,
-                                 'nombre5'=> $decoded[5]->nombre,
-                                 'nombre6'=> $decoded[6]->nombre,
-                                 'nombre7'=> $decoded[7]->nombre,
+            $infoTarjeta = array('nombre' => $decoded[0]->beneficiario,
+                                 'nombre1'=> $decoded[1]->beneficiario,
+                                 'nombre2'=> $decoded[2]->beneficiario,
+                                 'nombre3'=> $decoded[3]->beneficiario,
+                                 'nombre4'=> $decoded[4]->beneficiario,
+                                 'nombre5'=> $decoded[5]->beneficiario,
+                                 'nombre6'=> $decoded[6]->beneficiario,
+                                 'nombre7'=> $decoded[7]->beneficiario,
                                  'poliza' => $decoded[0]->poliza,
                                  'antiguedad' => $decoded[0]->antiguedad,
+                                 'asegurado' => $decoded[0]->nombre,
                                  'cantidad' => $num,
                                  'img' => false);
         }
 
        $this->pdf->generarCard('cliente/reportes/card',$infoTarjeta);
  }
+
+
 
 
   public function pagar($solicitudId)
@@ -695,6 +779,68 @@ class Cliente extends CI_Controller {
       $this->pdf->generarPdf('cliente/reportes/recibo',$infoRecibo);*/   
 
   } 
+
+
+  public function repartoFile(){
+
+
+      /*$urlValidar = 'http://190.9.53.22:8484/appsipaapi/cliente/validacionreparto.php';
+      $validacion = $this->consultar($urlValidar,$solicitudId);
+
+        if($validacion[0]->bandera == 'true'){
+        echo $validacion[0]->status;
+        return;
+        }*/
+
+       $documento = $_FILES['file']['name'];
+       $extension = pathinfo($documento, PATHINFO_EXTENSION);
+       $nombre = pathinfo($documento, PATHINFO_FILENAME);
+       $repartidor = $this->session->idusuario;
+       $solicitudId = $this->input->get_post('solicitud');
+ 
+       $extensionesPermitidas = array("pdf","PDF");
+
+       if(! in_array($extension,$extensionesPermitidas)) 
+         {
+            echo (json_encode(array('status'=>'wrongFile')));
+            return; 
+         }
+
+
+        $ruta = base_url("assets/Archivos/Reparto/").$nombre;
+
+        $config['upload_path'] = './assets/Archivos/Reparto/';
+        $config['allowed_types'] = '*';
+        $config['max_size'] = 0;
+        $config['file_name'] = $nombre.'.'.$extension;
+
+        $this->load->library('upload',$config);
+
+        if (!$this->upload->do_upload('file'))
+         {
+           $error = array('error' => $this->upload->display_errors());
+                    echo json_encode($error);
+         } 
+         else 
+         {
+           $data = array("upload_data" => $this->upload->data());
+           $extension = $data['upload_data']['file_ext'];
+           $nombre = $data['upload_data']['raw_name'];
+
+
+
+           $data_curl = array('solicitudId' => $solicitudId,
+                                  'idUsuario'   => $repartidor);
+           $direccion = 'http://190.9.53.22:8484/appsipaapi/cliente/asignarRepartido.php';
+
+           $this->consultar($direccion, $data_curl);
+
+
+           echo(json_encode(array('status'=>'ok')));
+
+   }
+
+}
 
 
 

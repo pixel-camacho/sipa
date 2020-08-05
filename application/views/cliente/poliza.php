@@ -96,80 +96,23 @@
       #Anterior {
         text-decoration: none;
       }
- /*     
- ul #navigation {
-    position: fixed;
-    margin: 0px;
-    padding: 0px;
-    top: 0px;
-    list-style: none;
-    z-index:999999;
-    
-}
-ul#navigation li {
-    width: 103px;
-    display:inline;
-    float:left;
-}
-ul#navigation li a {
-    display: block;
-    float: left;
-    margin-top: -2px;
-    width: 100px;
-    height: 25px;
-    background-color: #E7F2F9;
-    background-repeat: no-repeat;
-    background-position: 50% 10px;
-    border: 1px solid #BDDCEF;
-    text-decoration: none;
-    text-align: center;
-    padding-top: 80px;
-}
 
-ul#navigation li a {
-    display: block;
-    float:left;
-    margin-top: -2px;
-    width: 100px;
-    height: 25px;
-    background-color:#E7F2F9;
-    background-repeat:no-repeat;
-    background-position:50% 10px;
-    border:1px solid #BDDCEF;
-    text-decoration:none;
-    text-align:center;
-    padding-top:80px;
-    -moz-border-radius:0px 0px 10px 10px;
-    -webkit-border-bottom-right-radius: 10px;
-    -webkit-border-bottom-left-radius: 10px;
-    -khtml-border-bottom-right-radius: 10px;
-    -khtml-border-bottom-left-radius: 10px;
-    opacity: 0.7;
-    filter:progid:DXImageTransform.Microsoft.Alpha(opacity=70);
-}
-ul#navigation li a:hover{
-     background-color:#CAE3F2;
-}
-ul#navigation li a span{
-    letter-spacing:2px;
-    font-size:11px;
-    color:#60ACD8;
-    text-shadow: 0 -1px 1px #fff;
-}
+      .modal-reparto{
+        max-width: 650px;
+        max-height: 400px;
+        text-align: center;
+      }
 
-ul#navigation .print{
-  background-image: url("<?php echo base_url();?>/assets/images/print.svg");
-  background-position: center;
-}*/
  #el{
   letter-spacing:2px;
     font-size:11px;
     color:#60ACD8;
     text-shadow: 0 -1px 1px #fff;
  }
+
   button{
  position: static;
- max-width:30%;
+ max-width:39%;
  text-align: center;
  
  }
@@ -221,11 +164,40 @@ ul#navigation .print{
  }
  #lista{
   text-decoration: none;
+  display: inline;
  }
 
-/* #money:hover{
-  transform: translate(10%,-10%);
- }*/
+ #reparto{
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+  max-width: 75px;
+ }
+
+ #reparto:hover {
+ transition: 1s;
+ transform: translateX(20px);
+ }
+
+ #print{
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  max-width: 75px;
+  margin-left: 85px;
+ }
+
+ #print:hover{
+  transition: 1s;
+  transform:scaleX(1.1);
+ }
+
+ .list-group .list-group-item:hover{
+  background-color:#e6e6e6;
+  }
+
+
 
 </style>
 </head>
@@ -237,25 +209,45 @@ ul#navigation .print{
 <!-- <ul id="navigation">
    <li><a class="print"   href=" <?php echo base_url('cliente/imprimir');?>/<?php echo $solicitudId;?> "><span>Imprimir</span></a></li>
  </ul>-->
- <?php if($datospoliza['producto'] == 'GMM' && $datospoliza['paqueteId'] == 12 || $datospoliza['paqueteId'] == 13 || $datospoliza['paqueteId'] == 14 || $datospoliza['paqueteId'] == 15) :?>
-  <button class="btn btn-outline" type="button" data-toggle="collapse" data-target="#demo" id="btnPrint">
+
+ <!-- <button class="btn btn-outline" type="button" data-toggle="collapse" data-target="#demo" id="btnPrint">
     <i class="fa fa-print"></i>
     Imprimir
   </button>
   <div id="demo"class="collapse">
     <ul id="lista">
-    <li><a  href="<?php echo base_url('cliente/imprimir');?>/<?php echo $solicitudId;?>">Autorizacion</a></li>
+      <li><a href="#" data-toggle='modal' data-target='#formatosModal'>Formatos</a></li>
+   <li><i class="fas fa-card"></i><a  href="<?php echo base_url('cliente/imprimir');?>/<?php echo $solicitudId;?>">Autorizacion</a></li>
     <li><a  href="<?php echo base_url('cliente/tarjeta');?>/<?php echo $solicitudId;?>" target="_blank">Tarjeta virtual</a></li> 
     <li><a  href="<?php echo base_url('cliente/letterCard');?>/<?php  echo $solicitudId;?>" target="_blank">Tarjeta física</a></li> 
-    <li><a >Formato</a></li>
+  <li><a href="<?php echo base_url('cliente/autorizacion');?>/<?php echo $solicitudId;?>" target='_blank'>Autorizacion de descuento</a></li>
+ <li><a href="<?php echo base_url('cliente/constancia')?>/<?php echo $solicitudId;?>" target='_blank'>Constancia de recepción</a></li> 
     </ul>
-  </div> 
+  </div> -->
+    
+
+ <?php if($datospoliza['producto'] == 'GMM' && $datospoliza['paqueteId'] == 12 || $datospoliza['paqueteId'] == 13 || $datospoliza['paqueteId'] == 14 || $datospoliza['paqueteId'] == 15) :?>
+
+   <a href="#" data-toggle="modal" data-target="#printModal" id="print">
+      <img src="<?php echo base_url('assets/images/print.png')?>">
+      <label>Imprimir</label>
+   </a> 
+ 
 <?php endif ?>
 
+  <?php if($datospoliza['EstatusReparto'] == 1) { ?>
 
-	<div class="content-wrapper">   
+          <a href="#" data-toggle="modal" data-target="#modalReparto" id="reparto">
+            <img src="<?php echo base_url('assets/images/delivery.png') ?>">
+            <label>Reparto</label>
+          </a>
+        <?php }?>
+
+
+	<div class="content-wrapper">  
 		    <div class ="card">
-				<div class="row">
+
+			<div class="row">
                         <div class="col-md-4">
                            <div class="card-body">
                               <h4 class="card-title text-primary">Datos de la Poliza</h4>
@@ -312,7 +304,7 @@ ul#navigation .print{
                         </div>
 						
                      </div>
-                     <main>
+                     <main id="panel-main">
 
 
                <input id="tab1" type="radio" name="tabs" checked>
@@ -626,6 +618,49 @@ ul#navigation .print{
 	
  </div>
 
+
+ <!--MODAL REPARTO-->
+ <div class="modal fade" tabindex="-1" role="dialog" id="modalReparto" >
+  <div class="modal-dialog modal-dialog-centered modal-reparto">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><strong><i class="fa fa-motorcycle"></i>Reparto</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" >
+            <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+            <form method="POST" action="<?php echo base_url('cliente/repartoFile');?>" id="form-reparto" role="form" enctype="multipart/form-data">
+              <strong id="title">Seleccionar documento:</strong>
+              <hr>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="texto">Selecciona</span>
+                </div>
+                <div class="custom-file">
+                  <input type="file" class="custom-file-input" id="file" name="file">
+                  <label class="custom-file-label" id="lbl-text"></label>
+                </div>
+              </div>
+              <input type="hidden" name="solicitud" id="solicitud" value="<?php echo $solicitudId; ?>">
+              <hr>
+              <input type="submit"  id="btnAsignar" class="btn" style="background-color: #ffbf00; "  value="Asignar"> 
+              <button type="button" class="btn" style="background-color: #D2691E;" data-dismiss="modal" id="btnClose">Cancelar</button> 
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+   
+ </div>
+
+
+
+
 <!--MODAL -->
   <div class="modal fade" id="modalUp" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -707,6 +742,54 @@ ul#navigation .print{
   </div>
  </div> 
 
+ <!--MODAL PRINTER--->
+  <div class="modal fade" id="printModal" tabindex="-1" aria-labelledby="printModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content modal-sm">
+                <div class="modal-header">
+                    <h4 class="modal-title text-center"><i class="fa fa-print"></i> Imprimir Formatos</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="list-group">
+                       
+                            <a class="list-group-item" href="<?php echo base_url('cliente/imprimir');?>/<?php echo $solicitudId;?>" target="_blank">
+                            Autorización
+                            </a>
+
+                            <a class="list-group-item" href="<?php echo base_url('cliente/constancia')?>/<?php echo $solicitudId;?>" target='_blank'>
+                            Constancia de recepción
+                            </a>
+                      
+                            <a class="list-group-item" href="<?php echo base_url('cliente/autorizacion');?>/<?php echo $solicitudId;?>" target='_blank'>
+                            Autorización de descuento
+                            </a>
+                            
+                     
+                            <a class="list-group-item" href="<?php echo base_url('cliente/adjunto');?>/<?php echo $solicitudId;?>"     target='_blank'>
+                            Adjunto 
+                            </a>
+
+                            <a class="list-group-item" href="<?php echo base_url('cliente/tarjeta');?>/<?php echo $solicitudId;?>" target='_blank'>
+                            Tarjeta Virtual
+                            </a>
+
+                            <a class="list-group-item" href="<?php echo base_url('cliente/letterCard');?>/<?php  echo $solicitudId;?>" target='_blank'>
+                            Tarjeta física
+                            </a> 
+                    </div>
+                </div>
+                <div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 <footer class="footer">
 	<div class="container-fluid clearfix">
@@ -724,6 +807,7 @@ ul#navigation .print{
 <script src="<?php echo base_url();?>/assets/js/operaciones.js"></script>
 <script src="<?php echo base_url();?>/assets/js/event.js"></script> 
 <script src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script type="text/javascript" src="<?php echo base_url('assets/js/modals.js');?>"></script>
 <link href="https://unpkg.com/nprogress@0.2.0/nprogress.css" rel="stylesheet"/>
 
 </body>

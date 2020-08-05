@@ -51,28 +51,28 @@
  
 				<?php if($cantidad == 1) { ?>
 				<span>
-					<?php echo $nombre?>	
+					<?php echo $nombre.'<br>'.$asegurado;?>	
 				</span>
 			    <?php } elseif ($cantidad == 2) {
-			    	echo $nombre.'<br>'.$nombre1; 
+			    	echo $nombre.'<br>'.$nombre1.'<br>'.$asegurado; 
 			          }elseif ($cantidad == 3) {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$asegurado; 
 			          } elseif($cantidad == 4) {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$asegurado; 
 			          }elseif($cantidad == 5)
 			          {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.'<br>'.$asegurado; 
 			          }elseif ($cantidad == 6) {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5;
+			          	             '<br>'.$nombre5.'<br>'.$asegurado;
 			          }elseif($cantidad == 7)
 			          {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5.'<br>'.$nombre6;
+			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$asegurado;
 			          }else
 			          {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$nombre7;
+			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$nombre7.'<br>'.$asegurado;
 			          }
 			    ?>
 				 
@@ -85,7 +85,7 @@
 		</ul>
 		<?php 
 
-             echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
+             echo "<img id='qr' src='assets/images/QR/".$asegurado.".png' alt='noo!'>";
            
 		?>
 <?php  } elseif(!$img) {?>
@@ -114,28 +114,28 @@
  
 				<?php if($cantidad == 1) { ?>
 				<span>
-					<?php echo $nombre?>	
+					<?php echo $nombre.'<br>'.$asegurado;?>	
 				</span>
 			    <?php } elseif ($cantidad == 2) {
-			    	echo $nombre.'<br>'.$nombre1; 
+			    	echo $nombre.'<br>'.$nombre1.'<br>'.$asegurado; 
 			          }elseif ($cantidad == 3) {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$asegurado; 
 			          } elseif($cantidad == 4) {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$asegurado; 
 			          }elseif($cantidad == 5)
 			          {
-			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4; 
+			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.'<br>'.$asegurado; 
 			          }elseif ($cantidad == 6) {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5;
+			          	             '<br>'.$nombre5.'<br>'.$asegurado;
 			          }elseif($cantidad == 7)
 			          {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5.'<br>'.$nombre6;
+			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$asegurado;
 			          }else
 			          {
 			          	echo $nombre.'<br>'.$nombre1.'<br>'.$nombre2.'<br>'.$nombre3.'<br>'.$nombre4.
-			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$nombre7;
+			          	             '<br>'.$nombre5.'<br>'.$nombre6.'<br>'.$nombre7.'<br>'.$asegurado;
 			          }
 			    ?>
 				 
@@ -148,7 +148,7 @@
 		</ul>
 	 <?php 
          
-      echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
+      echo "<img id='qr' src='assets/images/QR/".$asegurado.".png' alt='noo!'>";
           
 	 	?>
 	   

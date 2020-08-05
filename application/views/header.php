@@ -207,7 +207,7 @@
                             </a>
                         </li>
 
-                        <!-- <li class="nav-item">
+                     <!--    <li class="nav-item">
                             <a class="nav-link" data-toggle='collapse' href="#latino" aria-expanded="false" aria-controls="ui-basic">
                                 <i class="menu-icon fa fa-building-o" ></i>
                                 <span class="menu-title">La Latino</span>
@@ -270,13 +270,8 @@
                                             <span class="menu-title">Documentos</span>
                                         </a>
                                     </li>
-                                  <!--  <li class="nav-item">
-                                        <a class="nav-link" href="<?= base_url('/reparto') ?>">
-                                            <i class="menu-icon fa fa-motorcycle"></i>
-                                            <span class="menu-title">Reparto</span>
-                                        </a>
-                                    </li>
--->									<!-- <li class="nav-item">
+                    
+				<!-- <li class="nav-item">
                                         <a class="nav-link" href="#">
                                             <i class="menu-icon fa fa-bars"></i>
                                             <span class="menu-title">reporte</span>

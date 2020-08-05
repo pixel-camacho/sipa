@@ -7,10 +7,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Notable&display=swap" rel="stylesheet">
 	<style type="text/css">
 
-		body{
-			font-family: 'Roboto Condensed',sans-serif;
-
-		}
+		body{ font-family: 'Roboto Condensed',sans-serif;}
 		.p1{
        box-shadow: 2px 2px 5px #999;
        border-radius: 15px;
@@ -21,7 +18,7 @@
     	font-size: 25px;
     }
 
-    .input-group, #solicitud{
+    .input-group, #destinatario{
     	width: 90%;
     	margin-right: auto;
     	margin-left: auto;
@@ -38,19 +35,9 @@
     	font-size: 17px;
     }
 
-   #title{
-   	margin-left: 20px;
-   }
+   #title{ margin-left: 20px;}
 
-   #error, #error1{
-   	display: block;
-   	color: red;
-   	font-size: 18px;
-   	font-weight: bold;
-    margin-top: 20px;
-    text-align: center;
-    border: solid;
-   }
+   .help-inline-error{color:red;}
 
 
 	</style>
@@ -69,22 +56,17 @@
 									<div class="card p1">
 										<div class="card-header text-center t1">Asignación de Reparto</div>
 										<div class="card-body">
-										<form method="POST" action="#">
+										<form method="POST" action="<?php echo base_url('Reparto/repartoFile'); ?>" id="form-reparto" role="form" enctype="multipart/form-data">
 										<div class="input-group mb-3">
 											<div class="input-group-prepend">
 												<span class="input-group-text" id="text-span">Cargar</span>
 											</div>
 											<div class="custom-file">
-												<input type="file" class="custom-file-input" id="input-text"                   aria-describedby="text-span">
+												<input type="file" name="input-text" id="input-text"  class="custom-file-input"  aria-describedby="text-span" required>
 												<label class="custom-file-label" for="input-text" id="message">Seleccionar Documento...</label>	
 											</div>
 										</div>
-					                     <label id="title">Nombre del asegurado:</label><br>
-										<input type="text" id="solicitud" class="form-control">
-
-										<label id="error">Favor de llenar los campos</label><br>
-										<label id="error1">Formato inválido</label>
-                                         
+										<input type="text" name="destinatario" id="destinatario" placeholder="Nombre del destinatario" class="form-control" required>
                                          <button id="enviar" class="btn">Asignar</button>
 										</form>
 										</div>
@@ -108,43 +90,15 @@
 	</div>
 	<script type="text/javascript">
 		$(document).ready(()=>{
-
-			const error  = $('#error').hide();
-			const error1 = $('#error1').hide();
-
 			$('#input-text').change(()=>{
               
-              error.hide();
-              let extensionesValidas = /(.pdf|.png)$/i;
-
              const filename = document.getElementById('input-text').files[0].name;
-             document.getElementById('message').innerHTML = filename;
-
-             if(! extensionesValidas.exec(filename)){
-
-             	error1.show();
-             }
-     
+             document.getElementById('message').innerHTML = filename;     
 			});
-
-			$('#solicitud').keydown(()=>{
-				error.hide();
-			});
-
-			$('#enviar').click( (e)=>{
-
-				const filename = document.getElementById('input-text').value;
-				const name = document.getElementById('solicitud').value;
-				e.preventDefault()
-
-				if(filename == '' || name == ''){
-					error.show();
-				}
-			});
-            
-
-
 		});
+
+
+	
 	</script>
 </body>
 </html>

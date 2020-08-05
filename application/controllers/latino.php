@@ -36,10 +36,8 @@ function index()
 {
 
   $colonias = $this->colonia->showAll();
-  $ocupaciones = $this->ocupaciones();
 
-  $data = ["datacolonia"=> $colonias,
-           "dataocuáciones" => $ocupaciones];
+  $data = ["datacolonia"=> $colonias];
 
   $this->load->view('header');
   $this->load->view('latino/index',$data);
@@ -158,11 +156,12 @@ public function callLatino($xml,$action)
  return $arrayresult;
 }
 
- public function catalogs($tags,$param)
+
+
+ public function getState()
  {
    $result =  array();
    //$values = $param;
-   $params = explode('-',$param);
    $action = 'http://tempuri.org/ICotizadorLatino/ObtenerCatalogos';
    $select = ' '; 
    $xml = '<?xml version="1.0" encoding="UTF-8"?>
@@ -177,16 +176,16 @@ public function callLatino($xml,$action)
              <ns1:Password>'.$this->password.'</ns1:Password>
            </ns2:credenciales>
            <ns2:datosAuto>
-             <ns1:ClaveProducto>'.$params[0].'</ns1:ClaveProducto>
-             <ns1:Tarifa>'.$params[1].'</ns1:Tarifa>
-             <ns1:TipoVehiculo>'.$params[2].'</ns1:TipoVehiculo>
+             <ns1:ClaveProducto>1</ns1:ClaveProducto>
+             <ns1:Tarifa>1704</ns1:Tarifa>
+             <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
              <ns1:ClavePerfil></ns1:ClavePerfil>
              <ns1:ClaveModelo></ns1:ClaveModelo>
              <ns1:ClaveMarca></ns1:ClaveMarca>
              <ns1:ClaveSubMarca></ns1:ClaveSubMarca>
              <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
              <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
-             <ns1:SerieValida>true</ns1:SerieValida>
+             <ns1:SerieValida>false</ns1:SerieValida>
              <ns1:NumeroPlacas></ns1:NumeroPlacas>
              <ns1:NumeroMotor></ns1:NumeroMotor>
              <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
@@ -208,7 +207,7 @@ public function callLatino($xml,$action)
    </SOAP-ENV:Envelope>';
 
   $result = $this->callLatino($xml,$action);
-  $catalogo = $result['S:ENVELOPE']['S:BODY']['OBTENERCATALOGOSRESPONSE']['OBTENERCATALOGOSRESULT'][$tags[0]][$tags[1]];
+  $catalogo = $result['S:ENVELOPE']['S:BODY']['OBTENERCATALOGOSRESPONSE']['OBTENERCATALOGOSRESULT']['A:ESTADOS']['A:ESTADO'];
 
   if(isset($result) && !empty($catalogo) && is_array($catalogo))
   {    
@@ -226,107 +225,11 @@ public function callLatino($xml,$action)
 
  }
 
- public function getCarAndDetail($soapAction ,$param ,$modelo,$paquete,$marca = null ,$submarca = null,$index)
- {
 
-  $result = array();
-  $select = ' ';
-  $SOAP = strtoupper($soapAction);
-  $action = "http://tempuri.org/ICotizadorLatino/".$soapAction;
-  $xml = '<?xml version="1.0" encoding="UTF-8"?>
-  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
-    <SOAP-ENV:Body>
-      <ns3:'.$soapAction.'>
-        <ns3:datos>
-          <ns2:credenciales>
-            <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
-            <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
-            <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
-            <ns1:Password>'.$this->password.'</ns1:Password>
-          </ns2:credenciales>
-          <ns2:datosAuto>
-            <ns1:ClaveProducto>'.$param[0].'</ns1:ClaveProducto>
-            <ns1:Tarifa>'.$param[1].'</ns1:Tarifa>
-            <ns1:TipoVehiculo>'.$param[2].'</ns1:TipoVehiculo>
-            <ns1:ClavePerfil>'.$param[3].'</ns1:ClavePerfil>
-            <ns1:ClaveModelo>'.$modelo.'</ns1:ClaveModelo>
-            <ns1:ClaveMarca>'.$marca.'</ns1:ClaveMarca>
-            <ns1:ClaveSubMarca>'.$submarca.'</ns1:ClaveSubMarca>
-            <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
-            <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
-            <ns1:SerieValida>false</ns1:SerieValida>
-            <ns1:NumeroPlacas></ns1:NumeroPlacas>
-            <ns1:NumeroMotor></ns1:NumeroMotor>
-            <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
-            <ns1:NombreConductor></ns1:NombreConductor>
-            <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
-          </ns2:datosAuto>
-          <ns2:caracteristicasCotizacion>
-            <ns1:ClaveEstado></ns1:ClaveEstado>
-            <ns1:ClavePaquete>'.$paquete.'</ns1:ClavePaquete>
-            <ns1:ClaveVigencia></ns1:ClaveVigencia>
-            <ns1:ClaveServicio></ns1:ClaveServicio>
-            <ns1:ClaveDescuento></ns1:ClaveDescuento>
-            <ns1:ClaveAgente></ns1:ClaveAgente>
-            <ns1:ClaveFormaPago></ns1:ClaveFormaPago>
-          </ns2:caracteristicasCotizacion>
-        </ns3:datos>
-      </ns3:'.$soapAction.'>
-    </SOAP-ENV:Body>
-  </SOAP-ENV:Envelope>';
-
-  $result = $this->callLatino($xml,$action);
-  $list = $result['S:ENVELOPE']['S:BODY'][$SOAP.'RESPONSE'][$SOAP.'RESULT'][$index[0]][$index[1]];
-
-  if(isset($result) && !empty($list))
-  {
-    foreach ($list as $value) 
-    {
-      $clave = $value['B:CLAVE'];
-      $select .= "<option value='$clave'>".$value['B:DESCRIPCION']."</option>";
-    }
-  }
-   
-   echo $select;
-   
- }
-
- public function getMarca()
- {
-   $index = array('A:MARCAS','B:MARCA');
-   $soapAction = 'ObtenerMarcas';
-   $param = $this->input->post('params');
-   $params = explode('-',$param);
-   $modelo = $this->input->post('modelo');
-   $paquete = $this->input->post('paquete');
-  
-   $txtSelect = $this->getCarAndDetail($soapAction,$params,$modelo,$paquete,null,null,$index);
-
-     echo $txtSelect; 
- }
-
- public function getSubmarca()
- {
-   $index = array('A:SUBMARCAS','B:SUBMARCA');
-   $soapAction = 'ObtenerSubMarcas';
-   $param = $this->input->post('params');
-   $params = explode('-',$param);
-   $modelo = $this->input->post('modelo');
-   $marca = $this->input->post('marca');
-   $paquete = $this->input->post('paquete');
-
-   $txtSelect = $this->getCarAndDetail($soapAction,$params,$modelo,$paquete,$marca,null,$index);
-
-     echo $txtSelect;
-   
- }
-
- public function getDecuentos ()
+  public function getDecuentos ()
  {
    $result =  array();
    $action = 'http://tempuri.org/ICotizadorLatino/ObtenerDescuentosYModelos';
-   $input  = $this->input->post('params');
-   $param  = explode('-',$input);
    $selectPaquete = $this->input->post('paquete');
    $selectEstado = $this->input->post('estado');
    $select = '';
@@ -342,10 +245,10 @@ public function callLatino($xml,$action)
              <ns1:Password>'.$this->password.'</ns1:Password>
            </ns2:credenciales>
            <ns2:datosAuto>
-             <ns1:ClaveProducto>'.$param[0].'</ns1:ClaveProducto>
-             <ns1:Tarifa>'.$param[1].'</ns1:Tarifa>
-             <ns1:TipoVehiculo>'.$param[2].'</ns1:TipoVehiculo>
-             <ns1:ClavePerfil>'.$param[3].'</ns1:ClavePerfil>
+             <ns1:ClaveProducto>1</ns1:ClaveProducto>
+             <ns1:Tarifa>1704</ns1:Tarifa>
+             <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+             <ns1:ClavePerfil>22</ns1:ClavePerfil>
              <ns1:ClaveModelo></ns1:ClaveModelo>
              <ns1:ClaveMarca></ns1:ClaveMarca>
              <ns1:ClaveSubMarca></ns1:ClaveSubMarca>
@@ -373,14 +276,13 @@ public function callLatino($xml,$action)
    </SOAP-ENV:Envelope>';   
 
    $result = $this->callLatino($xml,$action);
-   $modelAndDescuento = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCUENTOSYMODELOSRESPONSE']['OBTENERDESCUENTOSYMODELOSRESULT']['A:DESCUENTOS']['A:DESCUENTO'];
+   $modelAndDescuento = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCUENTOSYMODELOSRESPONSE']['OBTENERDESCUENTOSYMODELOSRESULT']['A:MODELOS']['B:STRING'];
 
      if(isset($result) && !empty($modelAndDescuento))
      {
        foreach($modelAndDescuento as $value)
        {
-          $clave = $value['A:CLAVE'];
-          $select .= "<option value='$clave'>".$value['A:DESCRIPCION']."</option>";
+          $select .= "<option value='".$value."'>".$value."</option>";
        }
      }
 
@@ -388,13 +290,201 @@ public function callLatino($xml,$action)
 
  }
 
+
+
+ public function getCarAndDetail($soapAction ,$modelo = null,$paquete = null,$marca = null ,$index)
+ {
+
+  $result = array();
+  $select = ' ';
+  $SOAP = strtoupper($soapAction);
+  $action = "http://tempuri.org/ICotizadorLatino/".$soapAction;
+  $xml = '<?xml version="1.0" encoding="UTF-8"?>
+  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
+    <SOAP-ENV:Body>
+      <ns3:'.$soapAction.'>
+        <ns3:datos>
+          <ns2:credenciales>
+            <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
+            <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
+            <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
+            <ns1:Password>'.$this->password.'</ns1:Password>
+          </ns2:credenciales>
+          <ns2:datosAuto>
+            <ns1:ClaveProducto>1</ns1:ClaveProducto>
+            <ns1:Tarifa>1704</ns1:Tarifa>
+            <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+            <ns1:ClavePerfil>22</ns1:ClavePerfil>
+            <ns1:ClaveModelo>'.$modelo.'</ns1:ClaveModelo>
+            <ns1:ClaveMarca>'.$marca.'</ns1:ClaveMarca>
+            <ns1:ClaveSubMarca></ns1:ClaveSubMarca>
+            <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
+            <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
+            <ns1:SerieValida>false</ns1:SerieValida>
+            <ns1:NumeroPlacas></ns1:NumeroPlacas>
+            <ns1:NumeroMotor></ns1:NumeroMotor>
+            <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
+            <ns1:NombreConductor></ns1:NombreConductor>
+            <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
+          </ns2:datosAuto>
+          <ns2:caracteristicasCotizacion>
+            <ns1:ClaveEstado></ns1:ClaveEstado>
+            <ns1:ClavePaquete>'.$paquete.'</ns1:ClavePaquete>
+            <ns1:ClaveVigencia></ns1:ClaveVigencia>
+            <ns1:ClaveServicio></ns1:ClaveServicio>
+            <ns1:ClaveDescuento></ns1:ClaveDescuento>
+            <ns1:ClaveAgente></ns1:ClaveAgente>
+            <ns1:ClaveFormaPago></ns1:ClaveFormaPago>
+          </ns2:caracteristicasCotizacion>
+        </ns3:datos>
+      </ns3:'.$soapAction.'>
+    </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>';
+
+  $result = $this->callLatino($xml,$action);
+
+
+  $list = $result['S:ENVELOPE']['S:BODY'][$SOAP.'RESPONSE'][$SOAP.'RESULT'][$index[0]][$index[1]];
+
+
+  if($list == null){
+
+    $txtSelect = "<option value='0'>No se encontraron resultados</option>";
+
+    echo $txtSelect;
+    return;
+
+  }
+
+
+  if(isset($result) && !empty($list))
+  {
+    foreach ($list as $value) 
+    {
+      $clave = $value['B:CLAVE'];
+      $select .= "<option value='$clave'>".$value['B:DESCRIPCION']."</option>";
+    }
+  }
+
+   echo $select;
+   
+ }
+
+ public function getMarca()
+ {
+   $index = array('A:MARCAS','B:MARCA');
+   $soapAction = 'ObtenerMarcas';
+   $modelo = $this->input->post('modelo');
+   $paquete = $this->input->post('paquete');
+  
+   $txtSelect = $this->getCarAndDetail($soapAction,$modelo,$paquete,null,$index);
+
+     echo $txtSelect; 
+ }
+
+ public function getSubmarca()
+ {
+   $index = array('A:SUBMARCAS','B:SUBMARCA');
+   $soapAction = 'ObtenerSubMarcas';
+   $modelo = $this->input->post('modelo');
+   $marca = $this->input->post('marca');
+   $paquete = $this->input->post('paquete');
+
+   $txtSelect = $this->getCarAndDetail($soapAction,$modelo,$paquete,$marca,$index);
+
+     echo $txtSelect;
+   
+ }
+
+
+ public function getDescripcion()
+{
+  $result = array();
+  $action = 'http://tempuri.org/ICotizadorLatino/ObtenerDescripcionVehiculo';
+  $modelo = $this->input->post('modelo');
+  $marca = $this->input->post('marca');
+  $subMarca = $this->input->post('submarca');
+  $paquete = $this->input->post('paquete');
+  $select = ' ';
+  $xml = '<?xml version="1.0" encoding="UTF-8"?>
+  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
+    <SOAP-ENV:Body>
+      <ns3:ObtenerDescripcionVehiculo>
+        <ns3:datos>
+          <ns2:credenciales>
+            <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
+            <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
+            <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
+            <ns1:Password>'.$this->password.'</ns1:Password>
+          </ns2:credenciales>
+          <ns2:datosAuto>
+            <ns1:ClaveProducto>1</ns1:ClaveProducto>
+            <ns1:Tarifa>1704</ns1:Tarifa>
+            <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+            <ns1:ClavePerfil>22</ns1:ClavePerfil>
+            <ns1:ClaveModelo>'.$modelo.'</ns1:ClaveModelo>
+            <ns1:ClaveMarca>'.$marca.'</ns1:ClaveMarca>
+            <ns1:ClaveSubMarca>'.$subMarca.'</ns1:ClaveSubMarca>
+            <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
+            <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
+            <ns1:SerieValida>true</ns1:SerieValida>
+            <ns1:NumeroPlacas></ns1:NumeroPlacas>
+            <ns1:NumeroMotor></ns1:NumeroMotor>
+            <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
+            <ns1:NombreConductor></ns1:NombreConductor>
+            <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
+          </ns2:datosAuto>
+          <ns2:caracteristicasCotizacion>
+            <ns1:ClaveEstado></ns1:ClaveEstado>
+            <ns1:ClavePaquete>'.$paquete.'</ns1:ClavePaquete>
+            <ns1:ClaveVigencia></ns1:ClaveVigencia>
+            <ns1:ClaveServicio></ns1:ClaveServicio>
+            <ns1:ClaveDescuento></ns1:ClaveDescuento>
+            <ns1:ClaveAgente></ns1:ClaveAgente>
+            <ns1:ClaveFormaPago></ns1:ClaveFormaPago>
+          </ns2:caracteristicasCotizacion>
+        </ns3:datos>
+      </ns3:ObtenerDescripcionVehiculo>
+    </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>';
+
+    $result = $this->callLatino($xml,$action);
+
+
+    $descripcion = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCRIPCIONVEHICULORESPONSE']['OBTENERDESCRIPCIONVEHICULORESULT']
+                          ['A:VEHICULOS']['B:DESCRIPCIONVEHICULO']; 
+
+                          
+
+      if($descripcion == null){
+
+        $select = "<option value='0'>No se encontraron resultados</option>";
+
+        echo $select;
+
+        return;
+      }
+
+              if(isset($result) && !empty($descripcion))
+              {
+                foreach($descripcion as $value)
+                {
+                  $clave = $value['B:CLAVE'];
+                  $select .= "<option value='$clave'>".$value['B:DESCRIPCION']."</option>";
+
+                }
+             
+              } 
+
+       echo $select;
+}
+
+
 public function getCoverage()
 {
   $result = [];
   $select = '';
   $action = "http://tempuri.org/ICotizadorLatino/ObtenerCoberturas";
-  $param = $this->input->post('params');
-  $params = explode('-',$param);
   $modelo = $this->input->post('modelo');
   $marca = $this->input->post('marca');
   $subMarca = $this->input->post('submarca');
@@ -413,10 +503,10 @@ public function getCoverage()
             <ns1:Password>'.$this->password.'</ns1:Password>
           </ns2:credenciales>
           <ns2:datosAuto>
-            <ns1:ClaveProducto>'.$params[0].'</ns1:ClaveProducto>
-            <ns1:Tarifa>'.$params[1].'</ns1:Tarifa>
-            <ns1:TipoVehiculo>'.$params[2].'</ns1:TipoVehiculo>
-            <ns1:ClavePerfil>'.$params[3].'</ns1:ClavePerfil>
+            <ns1:ClaveProducto>1</ns1:ClaveProducto>
+            <ns1:Tarifa>1704</ns1:Tarifa>
+            <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+            <ns1:ClavePerfil>22</ns1:ClavePerfil>
             <ns1:ClaveModelo>'.$modelo.'</ns1:ClaveModelo>
             <ns1:ClaveMarca>'.$marca.'</ns1:ClaveMarca>
             <ns1:ClaveSubMarca>'.$subMarca.'</ns1:ClaveSubMarca>
@@ -445,17 +535,8 @@ public function getCoverage()
 
   $result = $this->callLatino($xml,$action);
   $cobertura = $result['S:ENVELOPE']['S:BODY']['OBTENERCOBERTURASRESPONSE']['OBTENERCOBERTURASRESULT']['A:COBERTURAS']['B:COBERTURAS'];
-    
-    // if(isset($result) && !empty($cobertura))
-    // {
-    //   foreach($cobertura as $value)
-    //   {
-    //     $clave = $value['B:CLAVE'];
-    //     $select .= "<option value='$clave'>".$value['B:DESCRIPCION']."</option>";
-    //   }
-    // }
-  
-    var_dump($cobertura);
+
+  var_dump($result);
 
 }
 
@@ -463,8 +544,6 @@ public  function getQuote()
 {
   $result = [];
   $action = "http://tempuri.org/ICotizadorLatino/Cotizar";
-  $param = $this->input->post('params');
-  $params = explode('-',$param);
   $datosAuto = $this->input->post('datacar');
   $DescripcionCotizar = $this->input->post('datacotilizar');
   $cobertura = $this->input->post('covertura');
@@ -490,10 +569,10 @@ public  function getQuote()
             <ns1:ClaveFormaPago>'.$DescripcionCotizar[5].'</ns1:ClaveFormaPago>
           </ns2:caracteristicasCotizacion>
           <ns2:datosAuto>
-            <ns1:ClaveProducto>'.$params[0].'</ns1:ClaveProducto>
-            <ns1:Tarifa>'.$params[1].'</ns1:Tarifa>
-            <ns1:TipoVehiculo>'.$params[2].'</ns1:TipoVehiculo>
-            <ns1:ClavePerfil>'.$params[3].'</ns1:ClavePerfil>
+            <ns1:ClaveProducto>1</ns1:ClaveProducto>
+            <ns1:Tarifa>1704</ns1:Tarifa>
+            <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+            <ns1:ClavePerfil>22</ns1:ClavePerfil>
             <ns1:ClaveModelo>'.datosAuto[0].'</ns1:ClaveModelo>
             <ns1:ClaveMarca>'.datosAuto[1].'</ns1:ClaveMarca>
             <ns1:ClaveSubMarca>'.datosAuto[2].'</ns1:ClaveSubMarca>
@@ -533,115 +612,10 @@ public  function getQuote()
 
 }
 
-public function getDescripcion1()
-{
-  $result = array();
-  $action = 'http://tempuri.org/ICotizadorLatino/ObtenerDescripcionVehiculo';
-  $param = $this->input->post('params');
-  $params = explode('-',$param);
-  $modelo = $this->input->post('modelo');
-  $marca = $this->input->post('marca');
-  $subMarca = $this->input->post('submarca');
-  $paquete = $this->input->post('paquete');
-  $select = ' ';
-  $xml = '<?xml version="1.0" encoding="UTF-8"?>
-  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
-    <SOAP-ENV:Body>
-      <ns3:ObtenerDescripcionVehiculo>
-        <ns3:datos>
-          <ns2:credenciales>
-            <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
-            <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
-            <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
-            <ns1:Password>'.$this->password.'</ns1:Password>
-          </ns2:credenciales>
-          <ns2:datosAuto>
-            <ns1:ClaveProducto>'.$params[0].'</ns1:ClaveProducto>
-            <ns1:Tarifa>'.$params[1].'</ns1:Tarifa>
-            <ns1:TipoVehiculo>'.$params[2].'</ns1:TipoVehiculo>
-            <ns1:ClavePerfil>'.$params[3].'</ns1:ClavePerfil>
-            <ns1:ClaveModelo>'.$modelo.'</ns1:ClaveModelo>
-            <ns1:ClaveMarca>'.$marca.'</ns1:ClaveMarca>
-            <ns1:ClaveSubMarca>'.$subMarca.'</ns1:ClaveSubMarca>
-            <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
-            <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
-            <ns1:SerieValida>true</ns1:SerieValida>
-            <ns1:NumeroPlacas></ns1:NumeroPlacas>
-            <ns1:NumeroMotor></ns1:NumeroMotor>
-            <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
-            <ns1:NombreConductor></ns1:NombreConductor>
-            <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
-          </ns2:datosAuto>
-          <ns2:caracteristicasCotizacion>
-            <ns1:ClaveEstado></ns1:ClaveEstado>
-            <ns1:ClavePaquete>'.$paquete.'</ns1:ClavePaquete>
-            <ns1:ClaveVigencia></ns1:ClaveVigencia>
-            <ns1:ClaveServicio></ns1:ClaveServicio>
-            <ns1:ClaveDescuento></ns1:ClaveDescuento>
-            <ns1:ClaveAgente></ns1:ClaveAgente>
-            <ns1:ClaveFormaPago></ns1:ClaveFormaPago>
-          </ns2:caracteristicasCotizacion>
-        </ns3:datos>
-      </ns3:ObtenerDescripcionVehiculo>
-    </SOAP-ENV:Body>
-  </SOAP-ENV:Envelope>';
-
-    $result = $this->callLatino($xml,$action);
-    $descripcion = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCRIPCIONVEHICULORESPONSE']['OBTENERDESCRIPCIONVEHICULORESULT']
-                          ['A:VEHICULOS']['B:DESCRIPCIONVEHICULO']; 
-              if(isset($result) && !empty($descripcion))
-              {
-                foreach($descripcion as $value)
-                {
-                  $clave = $value['B:CLAVE'];
-                  $select .= "<option value='$clave'>".$value['B:DESCRIPCION']."</option>";
-
-                }
-             
-              } 
-
-       echo $select;
-}
-
- public function getState()
- {
-   $index1 = 'A:ESTADOS';
-   $index2 = 'A:ESTADO';
-   $indexs = array($index1,$index2);
-   $param = $this->input->post('textsearch');
-   $result = ' ';
-
-   $result = $this->catalogs($indexs,$param);
-
-   echo $result;
- }
-
- public function getPackage()
- {
-   $index1 = 'A:PAQUETES';
-   $index2 = 'A:PAQUETE';
-   $indexs =  array($index1,$index2);
-   $param = $this->input->post('textsearch');
-   $result = ' ';
-
-   $result = $this->catalogs($indexs,$param);
-
-   echo $result;
- }
 
 
- public function getPay()
- {
-   $index1 = 'A:FORMASPAGOS';
-   $index2 = 'A:FORMAPAGO';
-   $indexs = array($index1,$index2);
-   $param = $this->input->post('textsearch');
-   $result = ' ';
-   
-   $result = $this->catalogs($indexs,$param);
 
-   echo $result;
- }
+ 
 
 }
 

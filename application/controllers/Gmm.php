@@ -25,25 +25,13 @@ class Gmm extends CI_Controller
     {
     	$data = explode('-',$info);
 
-    	/*$decodeName = base64_decode($data[0]);
-    	$decodePoliza = base64_decode($data[1]);*/
-
-    	/*$encryptrName = base64_encode($data[0]);
-    	$encryptrPoliza = base64_encode($data[1]);*/
-
         $this->load->view('header');
     	$this->load->view('gmm/index',array('nombre' => $data[0],
                                             'poliza' => $data[1] ));
     	$this->load->view('footer');	
     }
 
-   /* public function buscar()
-    {
-    	$server = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-    	$name = explode('/', $server);
 
-    	echo 'hola '.$name[3];
-    }*/
 
 
 

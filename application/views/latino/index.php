@@ -16,6 +16,7 @@
 		color:#b9936c;
 		margin: 0px;
 		padding: 0px;
+		
 	}
 	#part2{
 		display:none;
@@ -47,16 +48,7 @@
 									<fieldset>
 										<legend><div id="title">Parte 1 de 4</div></legend>
 									<div class="row select" >
-										<div class="col-md-3">
-										   <div class="form-group">
-									           <select class="form-control custom-select" id="listaseguro" name="seguro"  required="required">
-											   <option value='1-1704-AU-22'>AUTOS</option>
-										       </select>
-												  <span id='loading'>Cargando <img id="loading" src="<?php echo base_url('assets/images/load/30.gif');?>" alt="Cargando Imagen" ></span>
-												  <span style="color:red;"></span>
-										  </div>
-                                        </div>
-								        <div class= "col-md-3">
+								        <div class= "col-md-4">
 											<div class="form-group">
 												<select class="form-control custom-select" id="listpackage" name="package" required>
 													<option value=''>* Paquete</option>
@@ -67,7 +59,16 @@
 												<span style="color:red;"><?php echo form_error('package');?></span>
 											</div>
 										</div>
-										<div class="col-md-3">
+										<div class="col-md-4">
+											<div class="form-group">
+												<select name="state" id="listastate" class="form-control custom-select" required>
+													<option value=" ">* Seleccionar estado</option>
+												</select>
+												<span style="color: red;"><?php echo form_error('state')?></span>
+											</div>
+										</div>
+
+									<!--	<div class="col-md-4">
 											<div class="form-group">
 												<select name="year" id="listyear" class="form-control custom-select" required>
 													<option value=''>* Año</option>
@@ -81,15 +82,18 @@
 												</select>
 												<span style="color:red;"><?php echo form_error('year');?></span>
 											</div>
-										</div>
-										<div class="col-md-3">
+										</div>-->
+										<div class="col-md-4">
 											<div class="form-group">
-                                             <input type="date" id="fechainicio" class="form-control">
+                                             <select name="year" id="listyear" class="form-control custom-select" required>
+                                             	<option value=" ">* Seleccionar el año</option>
+                                             </select>
+                                             <span style="color: red;"><?php echo form_error('year'); ?></span>
 											</div>
 
 										</div>
 								 </div>
-
+								 <img src="<?php echo base_url('assets/images/load/30.gif')  ?>" id="loading">
 								 <div class='row'>
 								 <div class="col-md-12">
 												<div class="form-group	">
@@ -206,12 +210,7 @@
 											<div class="form-group">
 												<select name="listocupacion" id="listocupacion" class="custom-select">
 													<option value="">* OCUPACION</option>
-													<?php
-														  foreach($dataocupaciones as $ocupacion)
-														  {
-                                                             echo "<option value=''></option>"
-														  }
-													?>
+													
 												</select>
 											</div>
 										</div>
@@ -248,6 +247,7 @@ jQuery().ready(function () {
 
 		rules:{
 			package: "required",
+			state: "required",
 			year: "required",
 			marca: "required",
 			submarca : "required",
@@ -255,10 +255,12 @@ jQuery().ready(function () {
 		},
 		messages: {
 			package: "Campo requerido",
+			state: "Campo requerido",
 			year: "Campo requerido",
 			marca: "Campo requerido",
 			submarca : "Campo requerido",
 			descripcion: "Campo requerido",
+			
 			
 		},
 		errorElement: "span",
