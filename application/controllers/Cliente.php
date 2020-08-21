@@ -81,7 +81,6 @@ class Cliente extends CI_Controller {
 		
     }
 
-	
       public function poliza ($solicitudId)
 	  {	  		
 	
@@ -133,15 +132,12 @@ class Cliente extends CI_Controller {
             'paqueteId' => $decoded[0] ->paqueteId,
             'EstatusReparto'=>$decoded[0]->EstatusReparto);
 
-		 
-		    
-		  
-		 
 	        $data = array ('datospoliza' => $datospoliza,
-	                       'solicitudId' => $solicitudId);
-				
+	                       'solicitudId' => $solicitudId,
+                           'idCliente1'=> $decoded[0]->idCliente1,
+                           'idCliente' => $decoded[0]->idCliente);
 		 $this->load->view('header');
-	     $this->load->view('cliente/poliza',$data);
+	   $this->load->view('cliente/poliza',$data);
 		 $this->load->view('footer');
      }
      
@@ -335,8 +331,10 @@ class Cliente extends CI_Controller {
          $this->pdf->generarPdf('cliente/reportes/autorizacion',$info);
     }
 
-    public function adjunto ($solicitudId)
+    public function adjunto ($solicitudId,$idcliente)
     {
+
+
 
        $this->load->library('pdf');
         $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
@@ -358,21 +356,106 @@ class Cliente extends CI_Controller {
                     die('error occured during curl exec. Additional: '.var_export($info));
         }
           curl_close($curl);
-          
           $data = json_decode($curl_response, true);
+
+
+          $post_data = ['idcliente' => $idcliente];
+          $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/countSeguros.php';
+          $curl1 = curl_init();
+
+            curl_setopt($curl1, CURLOPT_URL, $service_url);
+            curl_setopt($curl1, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl1, CURLOPT_POST, true);
+            curl_setopt($curl1, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response1 = curl_exec($curl1);
+
+        if($curl_response1 === false)
+        {
+            $info = curl_getinfo($curl1);
+                    curl_close($curl1);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl1);
+          $seguros = json_decode($curl_response1,true);
+
+           $hexadecimal = $seguros[0]['poliza2020'];
+           $bin = hex2bin($hexadecimal);
+
+           file_put_contents('poliza2020.pdf',$bin);
+
+
+  exec('"C:\Program Files\gs\gs9.52\bin\gswin64.exe" -dPDFSETTINGS=/ebook -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg  -dJPEGQ=95  -r250x250 -sOutputFile=%i.jpg poliza2020.pdf ');
+
           $info = ['data' => $data,
                    'name' => $this->session->name,
-                   'nombre' => $data[0]['irresponsable']];
+                   'nombre' => $data[0]['irresponsable'],
+                   'seguros' => $seguros];
 
       $this->pdf->generarPdf('cliente/reportes/adjunto',$info,'Documentos');
 
     }
 
-    public function pagoViaNomina($solicitudId){
-      $this->load->library('pdf');
+    public function test ($solicitudId,$idcliente)
+    {
+        $this->load->library('pdf');
 
-       $this->load->library('pdf');
+        $post_data = ['solicitudId' => $solicitudId];
         $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
+         $curl = curl_init();
+
+            curl_setopt($curl, CURLOPT_URL, $service_url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response = curl_exec($curl);
+
+        if($curl_response === false)
+        {
+            $info = curl_getinfo($curl);
+                    curl_close($curl);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl);
+
+          $data = json_encode($curl_response,true);
+
+       /*--------------------------------------------------------*/
+
+          $post_data = ['idcliente' => $idcliente];
+          $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/countSeguros.php';
+          $curl1 = curl_init();
+
+            curl_setopt($curl1, CURLOPT_URL, $service_url);
+            curl_setopt($curl1, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl1, CURLOPT_POST, true);
+            curl_setopt($curl1, CURLOPT_POSTFIELDS, $post_data);
+
+    $curl_response1 = curl_exec($curl1);
+
+        if($curl_response === false)
+        {
+            $info = curl_getinfo($curl1);
+                    curl_close($curl1);
+                    die('error occured during curl exec. Additional: '.var_export($info));
+        }
+          curl_close($curl1);
+
+          $seguros = json_decode($curl_response1,true);
+
+          $info = ['data' => $data,
+                   'seguros' => $seguros];
+
+
+
+          $this->pdf->generarPdf('cliente/reportes/pago',$info);
+
+    }
+
+    public function pagoViaNomina($solicitudId){
+
+        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/validatePoliza.php';
         $post_data = ['solicitudId' => $solicitudId];
 
         $curl = curl_init();
@@ -394,15 +477,20 @@ class Cliente extends CI_Controller {
           
           $data = json_decode($curl_response, true);
 
-          $info = ['data' => $data,
-                   'cerrador' => $this->session->name];
+           $hexadecimal = $data[0]['contenido'];
+           $bin = hex2bin($hexadecimal);
 
-      $this->pdf->generarPdf('cliente/reportes/pago',$info);
-    }
+           file_put_contents('poliza2020.pdf',$bin);
 
-    
+try{
+  exec('"C:\Program Files\gs\gs9.52\bin\gswin64.exe" -dPDFSETTINGS=/ebook -dSAFER -dBATCH -dNOPAUSE -sDEVICE=jpeg  -dJPEGQ=95  -r250x250 -sOutputFile=%i.jpg poliza2020.pdf ');
+}catch(Exception $e){
+  echo 'Error: '.$e->getMessage();
+}
 
-    
+  
+ }
+
 
     public function recibo($solicitudId){
 

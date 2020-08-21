@@ -8,11 +8,19 @@ $(document).ready(function()
     $('#listastate').attr('disabled','disabled');
     $('#listdescripcion').attr('disabled','disabled');
     $('#listyear').attr('disabled','disabled');
+    $('#listPago').attr('disabled', 'disabled');
+    $('#listDescuento').attr('disabled', 'disabled');
+
 
 
      $('#listpackage').change(function()
      {
-       callLatino('listastate','http://190.9.53.22:8484/sipa/latino/getState','* Selecionar Estado');
+       $('#listPago').removeAttr('disabled');
+     });
+
+     $('#listPago').change(function()
+     {
+        callLatino('listastate','http://190.9.53.22:8484/sipa/latino/getState','* Seleccionar estado');
      });
 
      $('#listastate').change(()=>
@@ -20,7 +28,7 @@ $(document).ready(function()
        let estado    = $('#listastate').find('option:selected').val(); 
        let paquete   = $('#listpackage').find('option:selected').val();
        let data = `estado=${estado}&paquete=${paquete}`;
-       callLatino('listyear','http://190.9.53.22:8484/sipa/latino/getDecuentos','* Seleccionar Año',data);
+       callLatino('listyear','http://190.9.53.22:8484/sipa/latino/getYear','* Seleccionar Año',data);
      });
 
      $('#listyear').change(()=>
@@ -62,6 +70,17 @@ $(document).ready(function()
        }
      });
 
+     $('#listdescripcion').change(()=>{
+
+        let estado    = $('#listastate').find('option:selected').val(); 
+        let paquete   = $('#listpackage').find('option:selected').val();
+        let data = `estado=${estado}&paquete=${paquete}`;
+        callLatino('listDescuento','http://190.9.53.22:8484/sipa/latino/getDecuentos','Seleccionar descuento',data);
+
+     });
+
+
+
    /*  $('#listdescripcion').change(()=>
      {
       let modelo      = $('#listyear').find('option:selected').val();
@@ -74,17 +93,18 @@ $(document).ready(function()
       testCall('http://190.9.53:22:8484/sipa/latino/getCoverage',data);
      });*/
 
-     $('#listdescripcion').change(()=>
+     $('#listDescuento').change(()=>
       {
-       let modelo   = $('#listyear').find('option:selected').val();
-      let marca    = $('#listamarca').find('option:selected').val();
-       let paquete  = $('#listpackage').find('option:selected').val();
-       let submarca = $('#listasubmarca').find('option:selected').val();
-      let estado = 3;
+      let modelo      = $('#listyear').find('option:selected').val();
+      let marca       = $('#listamarca').find('option:selected').val();
+      let submarca    = $('#listasubmarca').find('option:selected').val();
       let descripcion = $('#listdescripcion').find('option:selected').val();
-      let data = `modelo=${modelo}&marca=${marca}&paquete=${paquete}&submarca=${submarca}&estado=${estado}&descripcion=${descripcion}`;
-       testCall('http://190.9.53.22:8484/sipa/latino/getCoverage',data);
-
+      let paquete     = $('#listpackage').find('option:selected').val();
+      let estado      = $('#listastate').find('option:selected').val();
+      let tipoPago    = $('#listPago').find('option:selected').val();
+      let descuento   = $('#listDescuento').find('option:selected').val();
+      let data = `modelo=${modelo}&marca=${marca}&paquete=${paquete}&submarca=${submarca}&estado=${estado}&descripcion=${descripcion}&tipoPago=${tipoPago}&descuento=${descuento}`;
+       testCall('http://190.9.53.22:8484/sipa/latino/getQuote',data);
       });
 
 });

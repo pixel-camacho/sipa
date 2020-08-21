@@ -768,7 +768,7 @@
                             </a>
                             
                      
-                            <a class="list-group-item" href="<?php echo base_url('cliente/adjunto');?>/<?php echo $solicitudId;?>"     target='_blank'>
+                            <a class="list-group-item" href="<?php echo base_url('cliente/adjunto');?>/<?php echo $solicitudId;?>/<?php echo $idCliente1; ?>"  target='_blank'>
                             Adjunto 
                             </a>
 
@@ -801,7 +801,6 @@
 		</span>
 	</div>
 </footer>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="<?php echo base_url();?>/assets/vue/appvue/cliente/loadData.js"></script>
 <script src="<?php echo base_url();?>/assets/js/operaciones.js"></script>

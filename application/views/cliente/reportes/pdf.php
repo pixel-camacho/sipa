@@ -217,7 +217,7 @@
  				<td>Reduccíon de deducibles con atencíon
  				    médicos y hospitales de red
  				</td>
- 				<td>$2,500.00</td>
+ 				<td>$4,000.00</td>
  			</tr>
  			<tr>
  				<td>Maternidad</td>
@@ -229,7 +229,7 @@
  			</tr>
  			<tr>
  				<td>Emergencia en el extranjero</td>
- 				<td>$100,000.00 dlls (reembolso 7 días)</td>
+ 				<td>$50,000.00 dlls (reembolso 7 días)</td>
  			</tr>
  			<tr>
  				<td>Honorarios Quirúrgicos</td>

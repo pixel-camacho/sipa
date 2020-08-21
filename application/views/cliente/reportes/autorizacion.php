@@ -3,9 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<title>Autorizacion de descuento</title>
+
 	<style type="text/css">
-
-
 		body{ 
 			font-family: 'Gadugi','Calibri'; 
 			font-size: 12px;
@@ -36,23 +35,26 @@
 
 		#codiRight{
 			position: absolute;
-			width: 170px;
-			height: 80px;
-			left: 490px;
-			top: -5px;
+			max-width: 170px;
+			height: 50px;
+			margin-left: 495px;
+			margin-top: -15px;
+			font-family: 'Libre Barcode 128', cursive;
+			font-size: 34pt;
+			text-align: center;
 		}
 
 		#fecha{
 			position: absolute;
-			top: 80px;
+			top: 50px;
 			left: 360px;
+			margin-right: 160px;
 		}
 
 		#solicitud{
 			position: absolute;
-			top: 80px;
+			top: 50px;
 			float: right;
-			margin-right: 40px;
 			font-size: 13px;
 			font-weight: bold;
 		}
@@ -240,14 +242,31 @@
 		 #lineas #cp{
 		 	width: 50%;
 		 }	
+
+
+		 #deduccionTotal{
+			position: absolute;
+			width: 120px;
+			height: 17px;
+			margin-left: 240px;
+			bottom: 425px;
+			text-align: center;
+		}
+
+
+
 	</style>
 </head>
 <body>
 	<div class="container">
        <img id="logoLeft" src="assets/images/logoproteges.png" alt="Logo Proteges">
        <label id="titleCenter">AUTORIZACIÓN DE DESCUENTO</label>
-       <!--<img id="codiRight" src="assets/images/logo.png"> -->
-    </div>
+
+       <label id="codiRight"><?php echo $data[0]['noSolicitud'];?>|20</label>
+      <!-- <img id="codiRight" src="assets/images/logo.png">  -->
+          </div>
+
+
     <span id="fecha"><?php echo $data[0]['fechaActual']; ?></span>
     <span id="solicitud"><?php echo $data[0]['noSolicitud']?></span>
 
@@ -257,12 +276,14 @@
     	<b>Domicilio: </b><label><?php echo $data[0]['domicilio']; ?></label><br>
     	<b>Municipio: </b><label><?php echo $data[0]['municipio'];?></label><br>
     	<b>Telefono:</b><label><?php 
-    	                             foreach ($data as $indice => $value) {
-                                             if( $indice < 2)
-                                             {
-                                             	 echo $value['telefono'].'<br>';
-                                             }
-    	                              } ?>
+    	                              foreach ($data as $value) {   
+
+    		                          if($value['telefono'] == $value['telefono1']) {
+                                             	 echo $value['telefono'];
+                                             	}else{
+                                             		echo $value['telefono'].' '.$value['telefono1'];
+                                             	}
+    	                             }?>
     	</label>
       </div>
       <div id="sectionRight">
@@ -306,7 +327,6 @@
     	</tr>
     </thead>
     <?php foreach($data as $clave => $value) {?>
-    	<?php if($clave%2 == 0 ) {?>
     	<tr>
     			<td><?php echo $value['beneficiarios'];?></td>
     			<td><?php echo $value['pago']; ?></td>
@@ -315,12 +335,14 @@
     			<td><?php echo $value['edad'];?></td>
     	</tr> 
     <?php }?>
-    <?php }?>
     </table>
 
       	<div class="contenedor">
     	<div id="left">
     	<p>DEDUCCION AUTORIZADA: </p><hr> 
+    	<div id="deduccionTotal"> 
+    	<span><?php  echo $data[0]['descuentoTotal'];?></span>
+    	</div>
     	<p>PROMOTOR: </p> <hr>
     	</div>
 
@@ -364,6 +386,7 @@
         	<hr>
         </div>
         </div>
+
 
 
 </body>

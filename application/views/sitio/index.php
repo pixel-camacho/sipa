@@ -146,7 +146,6 @@
             </div>
          </div>
       </div>
-      <pre><?php var_dump($_SESSION['__ci_last_regenerate']);?></pre>
    <!-- content-wrapper ends -->
    <!-- partial:partials/_footer.html -->
    <footer class="footer">

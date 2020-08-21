@@ -86,7 +86,7 @@
 		#right{
 			float: right;
 			margin-right: 65px;
-			width: 40%;
+			width: 45%;
 			position: absolute;
 			top: 125px;
 			}
@@ -164,6 +164,17 @@
 			text-align: center;
 		}
 
+		.barcode{
+			position: absolute;
+			max-width: 170px;
+			height: 50px;
+			margin-left: 495px;
+			margin-top: 12px;
+			font-family: 'Libre Barcode 128', cursive;
+			font-size: 34pt;
+			text-align: center;
+		}
+
 
 	</style>
 </head>
@@ -173,6 +184,7 @@
 		<img src="assets/images/logoproteges.png">
 		<h3>CONSTANCIA DE RECEPCIÓN DE PÓLIZA</h3>
 		<span><?php echo $data[0]['fechaActual']; ?></span>
+	   <div class="barcode"><label><?php echo $data[0]['noPoliza'];?></label></div>
 		<span id="poliza"><?php echo $data[0]['noPoliza'];?></span>
 	</div>
 
@@ -187,10 +199,13 @@
 	<div id="right">
 	<label>EMAIL: </label><span><?php echo $data[0]['email'];?></span><br>
 	<label>C.P:</label><span><?php echo $data[0]['cp'];?></span><span id="municipio1">MUNICIPIO:<?php echo $data[0]['municipio'];?></span><br>
-	<label>TELEFONO: </label><span><?php foreach($data as $key => $value){
-		                                             if($key < 2){
-                                                        echo $value['telefono'].'<br>';		                                             	
-		                                             }
+	<label>TELEFONO: </label><span><?php foreach ($data as $value) {   
+
+    		                          if($value['telefono'] == $value['telefono1']) {
+                                             	 echo $value['telefono'];
+                                             	}else{
+                                             		echo $value['telefono'].' '.$value['telefono1'];
+                                             	}
                                              
 	                                }?></span>
 	</div>

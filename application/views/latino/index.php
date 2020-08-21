@@ -48,7 +48,7 @@
 									<fieldset>
 										<legend><div id="title">Parte 1 de 4</div></legend>
 									<div class="row select" >
-								        <div class= "col-md-4">
+								        <div class= "col-md-3">
 											<div class="form-group">
 												<select class="form-control custom-select" id="listpackage" name="package" required>
 													<option value=''>* Paquete</option>
@@ -59,34 +59,33 @@
 												<span style="color:red;"><?php echo form_error('package');?></span>
 											</div>
 										</div>
-										<div class="col-md-4">
+
+										<div class="col-md-3">
+											<div class="form-group">
+												<select name='typepay' id="listPago" class="custom-select form-control" required>
+													<option value=" ">* Selecionar forma de pago</option>
+													<option value="0">ANUAL</option>
+												    <option value="1">SEMESTRAL</option>
+												    <option value="2">TRIMESTRAL</option>
+												    <option value="3">MENSUAL</option>
+												</select>
+												<span style="color:red;"><?php echo form_error('typepay');?></span>
+											</div>
+										</div>
+
+										<div class="col-md-3">
 											<div class="form-group">
 												<select name="state" id="listastate" class="form-control custom-select" required>
 													<option value=" ">* Seleccionar estado</option>
 												</select>
 												<span style="color: red;"><?php echo form_error('state')?></span>
 											</div>
-										</div>
+										</div> 
 
-									<!--	<div class="col-md-4">
-											<div class="form-group">
-												<select name="year" id="listyear" class="form-control custom-select" required>
-													<option value=''>* Año</option>
-													<?php
-														 for($i = 2021; $i >= 1990; $i--)
-														 {
-															 echo "<option value='$i'>".$i."</option>";
-														 }
-
-													?>
-												</select>
-												<span style="color:red;"><?php echo form_error('year');?></span>
-											</div>
-										</div>-->
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<div class="form-group">
                                              <select name="year" id="listyear" class="form-control custom-select" required>
-                                             	<option value=" ">* Seleccionar el año</option>
+                                             	<option value=" ">* Seleccionar año</option>
                                              </select>
                                              <span style="color: red;"><?php echo form_error('year'); ?></span>
 											</div>
@@ -100,7 +99,7 @@
 													<select name="marca" id="listamarca" class="form-control custom-select" required>
 														<option selected='' default selected>* Seleccionar Marca</option>
 													</select>
-													<span style="color:red;"><?php echo form_error('marca');?></span>
+													<span style="color: red;"><?php echo form_error('marca');?></span>
 												</div>
 											</div>
 										</div>
@@ -111,7 +110,7 @@
 													<select name="submarca" id="listasubmarca" class="form-control custom-select" required>
                                                         <option value='' >* Seleccionar Modelo</option>
 													</select>
-													<span style="color:red;"><?php echo form_error('submarca');?></span>
+													<span style="color: red;"><?php echo form_error('submarca');?></span>
 												</div>
 											</div>
 											</div>
@@ -122,12 +121,22 @@
 													<select name="descripcion" id="listdescripcion" class="form-control custom-select" required>
                                                         <option value='' >* Seleccionar Descripcion</option>
 													</select>
-													<span style="color:red;"><?php echo form_error('descripcion');?></span>
+													<span style="color: red;"><?php echo form_error('descripcion');?></span>
 												</div>
 											</div>
 											</div>
+
 											<div class="row">
-										<div class="col-md-12">
+												<div class="col-md-6">
+													<div class="form-group">
+														<select name="descuento" id="listDescuento" class="form-control custom-select">
+															<option value="">* Seleccionar Descuento</option>
+														</select>
+														<span style="color: red;"><?php echo form_error('descuento');?></span>
+													</div>
+												</div>
+
+										<div class="col-md-6">
 										<div class="form-group">
 										<select class="custom-select my-1" id="cp">
 											<option value="">* Selecciona codigo postal</option>
@@ -140,11 +149,13 @@
 										</select>
 										</div>
 										</div>
+
                                         <div class="form-group">
                                     	<div class="col-md-3">
-                                    		<button type="button" class="btn next">Siguinete<i class="fa fa-arrow-right"></i></button>
+                                    		<button type="button" class="btn next">Siguinete <i class="fa fa-arrow-right"></i></button>
 										</div>
 										</div>
+
 									</fieldset>
 								</div>
 
@@ -154,7 +165,7 @@
 									<legend><div id="title">Parte 2 de 4</div></legend>
 									<fieldset>
 										<br>
-									<h5><i class="fa fa-user"></i> Datos del Asegurado</h5>
+									<h5><i class="fa fa-user"></i> Datos del asegurado</h5>
 									<div class="row">
 										<div class="col-md-4">
 											<div class="form-group">
@@ -247,6 +258,7 @@ jQuery().ready(function () {
 
 		rules:{
 			package: "required",
+			typepay: "required",
 			state: "required",
 			year: "required",
 			marca: "required",
@@ -255,6 +267,7 @@ jQuery().ready(function () {
 		},
 		messages: {
 			package: "Campo requerido",
+			typepay: "Campo requerido",
 			state: "Campo requerido",
 			year: "Campo requerido",
 			marca: "Campo requerido",

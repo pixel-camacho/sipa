@@ -86,4 +86,13 @@
   'libre barcode 39 text' => array(
     'normal' => $fontDir . '\b379bf05d921534cd447b3d30f3b3d94',
   ),
+  'libre barcode 128 text' => array(
+    'normal' => $fontDir . '\f43a945c08c9094caa2fcb07da482808',
+  ),
+  'libre barcode 128' => array(
+    'normal' => $fontDir . '\4ffcbaff5d87fccb5ac9721ff860f56f',
+  ),
+  'libre barcode 39' => array(
+    'normal' => $fontDir . '\eb70157f1a20637da4677cdacf8262cb',
+  ),
 ) ?>

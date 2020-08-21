@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<title>PAGO VÍA NOMINA</title>
 </head>
+
+
 <style type="text/css">
 	 body{
 	 	background: url('assets/images/background.png');
@@ -74,7 +76,7 @@
 <div class="nuevoFormato">
 
 	<h3>FORMATO ÚNICO DE AUTORIZACION PARA PAGO VÍA NOMINA</h3><br>
-	<label>Mexicali, B.C. , a </label> <span><?php echo $data[0]['fechaActual'];?></span>
+	<label>Mexicali, B.C. , a </label> <span></span>
 	<br>
 	<br>
 	<div id="institulo">
@@ -87,13 +89,12 @@
 <div class="message">
 Por este conducto y con motivo del Abono que adquirí de la empresa
 Protección General en Seguros, S.A. de C.V. autorizo de manera expresa e
-irrevocable para que se cubra a esta última, la cantidad de <span><?php echo $data[0]['cantidadTotal'];?></span> vía
-nómina, en <span><?php echo $data[0]['periodo'];?></span> pagos en la clave <span><?php echo $data[0]['clavePago'];?></span> por la cantidad de <span><?php echo $data[0]['descuentoTotal'];?></span>  quincenales desde 
- <span><?php $fecha = explode('-',$data[0]['vigencia']);
-              echo $fecha[0];?></span> hasta el día <span><?php echo $fecha[1];?></span>.
+irrevocable para que se cubra a esta última, la cantidad de <span></span> vía
+nómina, en <span></span> pagos en la clave <span></span> por la cantidad de <span></span>  quincenales desde 
+ <span></span>.
 <br>
 <br>
-La presente autorización atiende al crédito personal derivado de la adquisición de <span><?php echo $data[0]['tipoSeguro'];?></span>
+La presente autorización atiende al crédito personal derivado de la adquisición de <span></span>
 Seguro de  con Protección General en Seguros, S.A. de C.V. con
 quien la ISEP suscribió Convenio de Colaboración para la Promoción de Abonos.
 Por tal motivo proporciono mis datos como trabajador y doy autorización para que
@@ -114,25 +115,25 @@ contraídos.
 	<br>
 	<br>
 	<br>
-	<span style="font-size: 15px;"><?php echo $data[0]['responsable'];?></span>
+	<span style="font-size: 15px;"></span>
 	<hr>
 	<b>Nombre  y firma</b>
     <br>
     <br>
     <br>
-    <span style="font-size: 15px;"><?php echo $data[0]['rfc'];?></span>
+    <span style="font-size: 15px;"></span>
 	<hr id="middle">
 	<b id="lblMiddle">RFC</b>
 	<br>
 	<br>
 	<br>
-	<span style="font-size: 15px;"><?php echo $data[0]['lugar'];?></span>
+	<span style="font-size: 15px;"></span>
 	<hr id="last">
 	<b id="spanLast">Dependencia</b>
 	<br>
 </div>
 
-<!--ISEP --->
+ISEP
 
 <style type="text/css">
 	.formato03{
@@ -567,16 +568,15 @@ contraídos.
 		<th>TIPO DE TARJETA</th>
 		</tr>
 		<tbody>
-		<?php foreach($data as $value) {?>
+	
 		<tr>
-		  <td><?php echo $value['tipoSeguro'];?></td>
-		  <td>785.35</td>
-		  <td>36100624-A</td>
-		  <td>16/06/2019 a  16/06/2020</td>
-		  <td>TPDPO1</td>	
-		  <td>DEBITO</td>
+		  <td></td>
+		  <td></td>
+		  <td></td>
+		  <td></td>
+		  <td></td>	
+		  <td></td>
 		</tr>
-	   <?php } ?>
 		</tbody>
 	</thead>	
 	</table>
@@ -586,20 +586,21 @@ contraídos.
     <div id="title10">CLIENTE TITULAR DEL A BANCARIA(NOMBRE COMPLETO)</div>
     <div id="title11">BANCO RECEPTOR</div>
 
-    	<div id="campo9"><?php echo $data[0]['responsable'];?></div>
-    	<div id="campo10"><?php echo $data[0]['banco'];?></div>
+    	<div id="campo9"></div>
+    	<div id="campo10"></div>
 
     <div id="title12">CLABE INTERBANCARIA (18 DIGITOS)</div>
     <div id="title13">RFC DEL CONTRANATE</div>
 
-       <div id="campo11">1234567891034567891</div>
-       <div id="campo12"><?php echo $data[0]['rfc'];?></div>
+       <div id="campo11"></div>
+       <div id="campo12"></div>
 
      <div id="option">
-     	<b id="message-menu">Seleccionar según aplique:</b>			
+     	<b id="message-menu">Seleccionar según aplique:</b>
      	<input type="checkbox">
      	<input type="checkbox">
-     	<input type="checkbox">
+     	<input type="checkbox" checked>
+  
          
         <div class="message-option">	
      	<span >Pagomático BANAMEX</span><br>	
@@ -613,7 +614,7 @@ contraídos.
 
 
         <div id="campo13"></div>
-        <div id="campo14"><?php echo $data[0]['telefono'];?></div>
+        <div id="campo14"></div>
 
 
     <div id="title16">MES/AÑO DE VIGENCIA (TARJETA):</div>
@@ -621,14 +622,13 @@ contraídos.
 
 
          <div id="campo15">00/00</div>
-         <div id="campo16"><?php echo $data[0]['email'];?></div>
+         <div id="campo16"></div>
         
     <div id="title18">CANTIDAD TOTAL</div>
-
          <div id="campo17">
-         	<span>MENSUAL: $</span> <b>1107.75</b>
-         	<span id="middleSpan">1ER PAGO: $</span> <b>1107.75</b>
-         	<span id="ultimo">SUBSECUENTES: $</span><b id="last">1107.75</b>
+         	<span>MENSUAL: $</span> <b></b>
+         	<span id="middleSpan">1ER PAGO: $</span> <b></b>
+         	<span id="ultimo">SUBSECUENTES: $</span><b id="last"></b>
          </div>
          <div id="campo18">OBSERVACIÓN:</div>
          <div id="campo19">EN CASO QUE MI CUENTA PRESENTE INSUFICIENCIA DE FONDOS AL MOMENTO DE LA APLICACiÓN  DE LA DOMICILIACION AUTORIZADA A PROTEGES A REALIZAR LA APLICAÓN DEL PERIODO DE ADEUDI AL SIGUIENTE MES, DE SUCEDER ESTA SITUACION DOS MESES CONSECUTIVOS, ME DOY POR ENTERADO QUE SE PROCEDERA A LA CANCELACION DE LA (S) POLIZA (S) </div>
@@ -639,13 +639,27 @@ contraídos.
     </div>
 
     <div id="title20">LUGAR Y FECHA</div>
-          <div id="campo21"><?php echo $data[0]['municipio'];?>: 30/07/2020</div>
+          <div id="campo21"></div>
 
-    <div id="title21">FIRMA DEL TITULAR DE LA CUENTA BANCARIA</div>
+    <div id="title21" style="background: black">FIRMA DEL TITULAR DE LA CUENTA BANCARIA</div>
           <div id="campo22"></div>
 
     <div id="title22">CERRADOR</div>
-          <div id="campo23"><?php echo $cerrador;?></div>
-</div>
+          <div id="campo23"></div>
+</div> 
+
+
+ <style type="text/css">
+     .poliza2020{
+      width: 100%;
+      background: #ffffff;
+     }   
+ </style>
+
+<div class="poliza2020">
+<!--
+  <img src="1.jpg" style="width: 100%; height: 950px;">
+  <img src="2.jpg" style="width: 100%; height: 950px;">
+--></div>
 </body>
 </html>

@@ -131,7 +131,9 @@ public function callLatino($xml,$action)
 {
     $arrayresult = array();
     $url = $this->url;
-	  $headers = [ "Content-type: text/xml;charset=utf-8", "Content-length: ".strlen($xml), "SOAPAction: ".$action];
+	  $headers = [ "Content-type: text/xml;charset=utf-8", 
+                 "Content-length: ".strlen($xml), 
+                 "SOAPAction: ".$action];
     $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $url);
           curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
@@ -157,11 +159,9 @@ public function callLatino($xml,$action)
 }
 
 
-
  public function getState()
  {
    $result =  array();
-   //$values = $param;
    $action = 'http://tempuri.org/ICotizadorLatino/ObtenerCatalogos';
    $select = ' '; 
    $xml = '<?xml version="1.0" encoding="UTF-8"?>
@@ -185,7 +185,7 @@ public function callLatino($xml,$action)
              <ns1:ClaveSubMarca></ns1:ClaveSubMarca>
              <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
              <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
-             <ns1:SerieValida>false</ns1:SerieValida>
+             <ns1:SerieValida>0</ns1:SerieValida>
              <ns1:NumeroPlacas></ns1:NumeroPlacas>
              <ns1:NumeroMotor></ns1:NumeroMotor>
              <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
@@ -207,9 +207,10 @@ public function callLatino($xml,$action)
    </SOAP-ENV:Envelope>';
 
   $result = $this->callLatino($xml,$action);
-  $catalogo = $result['S:ENVELOPE']['S:BODY']['OBTENERCATALOGOSRESPONSE']['OBTENERCATALOGOSRESULT']['A:ESTADOS']['A:ESTADO'];
+  $catalogo = $result['S:ENVELOPE']['S:BODY'];
+  var_dump($catalogo);
 
-  if(isset($result) && !empty($catalogo) && is_array($catalogo))
+ /* if(isset($result) && !empty($catalogo) && is_array($catalogo))
   {    
       foreach ($catalogo as $value) {
         $clave = $value['A:CLAVE'];
@@ -220,11 +221,76 @@ public function callLatino($xml,$action)
      $clave = $catalogo['A:CLAVE'];
      $select .= "<option value='$clave'>".$value['A:DESCRIPCION']."</option>";
   }
-  
-  echo $select;
+ 
+  echo $select;*/
 
  }
 
+
+  public function getYear ()
+ {
+   $result =  array();
+   $action = 'http://tempuri.org/ICotizadorLatino/ObtenerDescuentosYModelos';
+   $selectPaquete = $this->input->post('paquete');
+   $selectEstado = $this->input->post('estado');
+   $select = '';
+   $xml = '<?xml version="1.0" encoding="UTF-8"?>
+   <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
+     <SOAP-ENV:Body>
+       <ns3:ObtenerDescuentosYModelos>
+         <ns3:datos>
+           <ns2:credenciales>
+             <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
+             <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
+             <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
+             <ns1:Password>'.$this->password.'</ns1:Password>
+           </ns2:credenciales>
+           <ns2:datosAuto>
+             <ns1:ClaveProducto>1</ns1:ClaveProducto>
+             <ns1:Tarifa>1704</ns1:Tarifa>
+             <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
+             <ns1:ClavePerfil>22</ns1:ClavePerfil>
+             <ns1:ClaveModelo></ns1:ClaveModelo>
+             <ns1:ClaveMarca></ns1:ClaveMarca>
+             <ns1:ClaveSubMarca></ns1:ClaveSubMarca>
+             <ns1:ClaveVehiculo></ns1:ClaveVehiculo>
+             <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
+             <ns1:SerieValida>false</ns1:SerieValida>
+             <ns1:NumeroPlacas></ns1:NumeroPlacas>
+             <ns1:NumeroMotor></ns1:NumeroMotor>
+             <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
+             <ns1:NombreConductor></ns1:NombreConductor>
+             <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
+           </ns2:datosAuto>
+           <ns2:caracteristicasCotizacion>
+             <ns1:ClaveEstado>'.$selectPaquete.'</ns1:ClaveEstado>
+             <ns1:ClavePaquete>'.$selectEstado.'</ns1:ClavePaquete>
+             <ns1:ClaveVigencia></ns1:ClaveVigencia>
+             <ns1:ClaveServicio></ns1:ClaveServicio>
+             <ns1:ClaveDescuento></ns1:ClaveDescuento>
+             <ns1:ClaveAgente></ns1:ClaveAgente>
+             <ns1:ClaveFormaPago></ns1:ClaveFormaPago>
+           </ns2:caracteristicasCotizacion>
+         </ns3:datos>
+       </ns3:ObtenerDescuentosYModelos>
+     </SOAP-ENV:Body>
+   </SOAP-ENV:Envelope>';   
+
+   $result = $this->callLatino($xml,$action);
+   $modelAndDescuento = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCUENTOSYMODELOSRESPONSE']                     
+                               ['OBTENERDESCUENTOSYMODELOSRESULT']['A:MODELOS']['B:STRING'];
+
+     if(isset($result) && !empty($modelAndDescuento))
+     {
+       foreach($modelAndDescuento as $value)
+       {
+          $select .= "<option value='".$value."'>".$value."</option>";
+       }
+     }
+
+     echo $select;
+
+ }
 
   public function getDecuentos ()
  {
@@ -276,19 +342,21 @@ public function callLatino($xml,$action)
    </SOAP-ENV:Envelope>';   
 
    $result = $this->callLatino($xml,$action);
-   $modelAndDescuento = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCUENTOSYMODELOSRESPONSE']['OBTENERDESCUENTOSYMODELOSRESULT']['A:MODELOS']['B:STRING'];
+   $modelAndDescuento = $result['S:ENVELOPE']['S:BODY']['OBTENERDESCUENTOSYMODELOSRESPONSE']
+                               ['OBTENERDESCUENTOSYMODELOSRESULT']['A:DESCUENTOS']['A:DESCUENTO'];
 
      if(isset($result) && !empty($modelAndDescuento))
      {
        foreach($modelAndDescuento as $value)
        {
-          $select .= "<option value='".$value."'>".$value."</option>";
+          $select .= "<option value='".$value['A:CLAVE']."'>".$value['A:DESCRIPCION']."</option>";
        }
      }
 
-     echo $select;
+    echo $select;
 
  }
+
 
 
 
@@ -491,7 +559,8 @@ public function getCoverage()
   $descripcion = $this->input->post('descripcion');
   $paquete = $this->input->post('paquete');
   $estado = $this->input->post('estado');
-  $xml = '<?xml version="1.0" encoding="UTF-8"?>
+  $xml = 
+  ' <?xml version="1.0" encoding="UTF-8"?>
   <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
     <SOAP-ENV:Body>
       <ns3:ObtenerCoberturas>
@@ -533,89 +602,183 @@ public function getCoverage()
     </SOAP-ENV:Body>
   </SOAP-ENV:Envelope>';
 
-  $result = $this->callLatino($xml,$action);
+
+ $result = $this->callLatino($xml,$action);
   $cobertura = $result['S:ENVELOPE']['S:BODY']['OBTENERCOBERTURASRESPONSE']['OBTENERCOBERTURASRESULT']['A:COBERTURAS']['B:COBERTURAS'];
 
-  var_dump($result);
+  var_dump($result); 
 
 }
 
 public  function getQuote()
 {
   $result = [];
-  $action = "http://tempuri.org/ICotizadorLatino/Cotizar";
-  $datosAuto = $this->input->post('datacar');
-  $DescripcionCotizar = $this->input->post('datacotilizar');
-  $cobertura = $this->input->post('covertura');
-  $select = '';
-  $xml = '<?xml version="1.0" encoding="UTF-8"?>
-  <SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos" xmlns:ns2="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador" xmlns:ns3="http://tempuri.org/">
-    <SOAP-ENV:Body>
-      <ns3:Cotizar>
-        <ns3:datosCotizar>
-          <ns2:credenciales>
-            <ns1:IdApp>'.$this->idApp.'</ns1:IdApp>
-            <ns1:PassApp>'.$this->passApp.'</ns1:PassApp>
-            <ns1:ClaveUsuario>'.$this->claveUsuario.'</ns1:ClaveUsuario>
-            <ns1:Password>'.$this->password.'</ns1:Password>
-          </ns2:credenciales>
-          <ns2:caracteristicasCotizacion>
-            <ns1:ClaveEstado>'.$DescripcionCotizar[0].'</ns1:ClaveEstado>
-            <ns1:ClavePaquete>'.$DescripcionCotizar[1].'</ns1:ClavePaquete>
-            <ns1:ClaveVigencia>'.$DescripcionCotizar[2].'</ns1:ClaveVigencia>
-            <ns1:ClaveServicio>'.$DescripcionCotizar[3].'</ns1:ClaveServicio>
-            <ns1:ClaveDescuento>'.$DescripcionCotizar[4].'</ns1:ClaveDescuento>
-            <ns1:ClaveAgente>'.$this->claveUsuario.'</ns1:ClaveAgente>
-            <ns1:ClaveFormaPago>'.$DescripcionCotizar[5].'</ns1:ClaveFormaPago>
-          </ns2:caracteristicasCotizacion>
-          <ns2:datosAuto>
-            <ns1:ClaveProducto>1</ns1:ClaveProducto>
-            <ns1:Tarifa>1704</ns1:Tarifa>
-            <ns1:TipoVehiculo>AU</ns1:TipoVehiculo>
-            <ns1:ClavePerfil>22</ns1:ClavePerfil>
-            <ns1:ClaveModelo>'.datosAuto[0].'</ns1:ClaveModelo>
-            <ns1:ClaveMarca>'.datosAuto[1].'</ns1:ClaveMarca>
-            <ns1:ClaveSubMarca>'.datosAuto[2].'</ns1:ClaveSubMarca>
-            <ns1:ClaveVehiculo>'.datosAuto[3].'</ns1:ClaveVehiculo>
-            <ns1:NumeroSerieAuto></ns1:NumeroSerieAuto>
-            <ns1:SerieValida>true</ns1:SerieValida>
-            <ns1:NumeroPlacas></ns1:NumeroPlacas>
-            <ns1:NumeroMotor></ns1:NumeroMotor>
-            <ns1:NumeroControlVehicular></ns1:NumeroControlVehicular>
-            <ns1:NombreConductor></ns1:NombreConductor>
-            <ns1:BeneficiarioPreferente></ns1:BeneficiarioPreferente>
-          </ns2:datosAuto>
-          <ns2:ValorConvenido>0</ns2:ValorConvenido>
-          <ns2:FechaFactura></ns2:FechaFactura>
-          <ns2:ValorFactura>0</ns2:ValorFactura>
-          <ns2:coberturasAmparadas>
-            <ns2:CoberturaAmparada>
-              <ns2:Amparada>true</ns2:Amparada>
-              <ns2:Clave>'.$cobertura[0].'</ns2:Clave>
-              <ns2:Descripcion>'.$cobertura[1].'</ns2:Descripcion>
-              <ns2:SumaAsegurada>0</ns2:SumaAsegurada>
-              <ns2:DescripcionSumaAsegurada>'.$cobertura[2].'</ns2:DescripcionSumaAsegurada>
-              <ns2:PorcentajeDeducible>0</ns2:PorcentajeDeducible>
-              <ns2:DescripcionDeducible>'.$cobertura[3].'</ns2:DescripcionDeducible>
-              <ns2:PrimaNeta>'.$cobertura[4].'</ns2:PrimaNeta>
-            </ns2:CoberturaAmparada>
-          </ns2:coberturasAmparadas>
-        </ns3:datosCotizar>
-      </ns3:Cotizar>
-    </SOAP-ENV:Body>
-  </SOAP-ENV:Envelope>';
+  $action   = "http://tempuri.org/ICotizadorLatino/Cotizar";
+  $modelo      = $this->input->post('modelo');
+  $marca       = $this->input->post('marca');
+  $submarca    = $this->input->post('submarca');
+  $descripcion = $this->input->post('descripcion');
+  $paquete     = $this->input->post('paquete');
+  $estado      = $this->input->post('estado');
+  $tipoPago    = $this->input->post('tipoPago');
+  $descuento   = $this->input->post('descuento');
+  $xml = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+    <Body>
+        <Cotizar xmlns="http://tempuri.org/">
+            <!-- Optional -->
+            <datosCotizar>
+
+                <!-- Optional -->
+                <credenciales xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">
+                    <IdApp xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$this->idApp.'</IdApp>
+                    <PassApp xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$this->passApp.'</PassApp>
+                    <ClaveUsuario xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$this->claveUsuario.'</ClaveUsuario>
+                    <Password xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$this->password.'</Password>
+                </credenciales>
+
+                <!-- Optional -->
+                <caracteristicasCotizacion xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">
+                    <ClaveEstado xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$estado.'</ClaveEstado>
+                    <ClavePaquete xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$paquete.'</ClavePaquete>
+                    <ClaveVigencia xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">0</ClaveVigencia>
+                    <ClaveServicio xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">1</ClaveServicio>
+                    <ClaveDescuento xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$descuento.'</ClaveDescuento>
+                    <ClaveAgente xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$this->claveUsuario.'</ClaveAgente>
+                    <ClaveFormaPago xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$tipoPago.'</ClaveFormaPago>
+                </caracteristicasCotizacion>
+
+                <datosAuto xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">
+                    <ClaveProducto xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">1</ClaveProducto>
+                    <Tarifa xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">1704</Tarifa>
+                    <TipoVehiculo xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">AU</TipoVehiculo>
+                    <ClavePerfil xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">22</ClavePerfil>
+                    <ClaveModelo xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$modelo.'</ClaveModelo>
+                    <ClaveMarca xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$marca.'</ClaveMarca>
+                    <ClaveSubMarca xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$submarca.'</ClaveSubMarca>
+                    <ClaveVehiculo xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">'.$descripcion.'</ClaveVehiculo>
+                    <NumeroSerieAuto xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></NumeroSerieAuto>
+                    <SerieValida xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos">true</SerieValida>
+                    <NumeroPlacas xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></NumeroPlacas>
+                    <NumeroMotor xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></NumeroMotor>
+                    <NumeroControlVehicular xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></NumeroControlVehicular>
+                    <NombreConductor xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></NombreConductor>
+                    <BeneficiarioPreferente xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Catalogos"></BeneficiarioPreferente>
+                </datosAuto>
+
+                <ValorConvenido xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">0</ValorConvenido>
+                <FechaFactura xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador"></FechaFactura>
+                <ValorFactura xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">0</ValorFactura>
+
+                <coberturasAmparadas xmlns="http://schemas.datacontract.org/2004/07/WCFModelo.Cotizador">
+                       <CoberturaAmparada>
+                         <Amparada>true</Amparada>
+                          <Clave>RT</Clave>
+                          <Descripcion>ROBO TOTAL</Descripcion>
+                          <SumaAsegurada>0</SumaAsegurada>
+                          <DescripcionSumaAsegurada>VALOR COMERCIAL</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>5</PorcentajeDeducible>
+                          <DescripcionDeducible>5%</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                       </CoberturaAmparada>
+
+                       <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>RC</Clave>
+                          <Descripcion>RESPONSBILIDAD CIVIL L.U.C.*</Descripcion>
+                          <SumaAsegurada>750000</SumaAsegurada>
+                          <DescripcionSumaAsegurada>750,000.00</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+         
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>RCE</Clave>
+                          <Descripcion>EXTENSION DE RESPONSABILIDAD CIVIL</Descripcion>
+                          <SumaAsegurada>0</SumaAsegurada>
+                          <DescripcionSumaAsegurada>AMPARADA</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>RCC</Clave>
+                          <Descripcion>EXCESO DE RC A PERSONAS ART.502</Descripcion>
+                          <SumaAsegurada>500000</SumaAsegurada>
+                          <DescripcionSumaAsegurada>500,000.00</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta> 
+                        </CoberturaAmparada>
+
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>GM</Clave>
+                          <Descripcion>GASTOS MEDICOS OCUPANTES L.U.C.*</Descripcion>
+                          <SumaAsegurada>125000</SumaAsegurada>
+                          <DescripcionSumaAsegurada>125,000.00</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>DJ</Clave>
+                          <Descripcion>ASESORIA LEGAL, FIANZAS Y/O CAUCIONES</Descripcion>
+                          <SumaAsegurada>0</SumaAsegurada>
+                          <DescripcionSumaAsegurada>AMPARADA</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>AI</Clave>
+                          <Descripcion>ASISTENCIA VIAL</Descripcion>
+                          <SumaAsegurada>0</SumaAsegurada>
+                          <DescripcionSumaAsegurada>AMPARADA</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+
+                        <CoberturaAmparada>
+                          <Amparada>true</Amparada>
+                          <Clave>MA</Clave>
+                          <Descripcion>ACCIDENTES AL CONDUCTOR</Descripcion>
+                          <SumaAsegurada>100000</SumaAsegurada>
+                          <DescripcionSumaAsegurada>100,000.00</DescripcionSumaAsegurada>
+                          <PorcentajeDeducible>0</PorcentajeDeducible>
+                          <DescripcionDeducible>0</DescripcionDeducible>
+                          <PrimaNeta>null</PrimaNeta>
+                        </CoberturaAmparada>
+                  </coberturasAmparadas>
+
+            </datosCotizar>
+        </Cotizar>
+    </Body>
+</Envelope>';
+
 
   $result = $this->callLatino($xml,$action);
-  $cotizacion = $resultt['S:ENVELOPE']['S:BODY']['COTIZARRESPONSE']['COTIZARRESULT'];
+  $cotizacion = $result['S:ENVELOPE']['S:BODY']["COTIZARRESPONSE"]["COTIZARRESULT"];
 
-  echo cotizar;
+ var_dump($cotizacion);
+
+}
+
+
+
 
 }
 
 
 
 
- 
 
-}
 
