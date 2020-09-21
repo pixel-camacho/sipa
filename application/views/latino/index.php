@@ -3,12 +3,12 @@
 </script>
 
 <style>
-	.btn{
+	.btn1{
 		background-color: rgba(255, 153, 51,.9);
 		color: white;
     	margin: 10px;
 	}
-	.btn:hover{
+	.btn1:hover{
 		color: white;
 		background: rgba(255, 153, 51);
 	}
@@ -29,6 +29,18 @@
 		float: right;
 		text-decoration: underline black;
 	}
+
+	#loading{
+	    width: 150px;
+	    height: 20px;
+	    margin-left: 1%;
+	}
+
+	#write{
+		width: 180px;
+		height: 180px;
+		float: right;
+	}
 	
 </style>
 
@@ -40,13 +52,22 @@
 					<div class="card">
 						<div class="card-body">
 							<h3><strong>Emitir póliza de autos</strong></h3>
+							<!--<textarea class="form-control" style="width: 45%;
+							                                      height: 80px;
+							                                      display: block;
+							                                      float: right;
+							                                      margin-top: -72px;" id="xml"></textarea>-->
+							    <input type="text" id="data" class="form-control" style="width: 30%;
+							                                                             position: absolute;
+							                                                             margin-top: -30px;
+							                                                             margin-left: 730px;">
 							<hr>
 							<div class="row">
 								<div class="col-md-12">
 								<form name="basicform" id="basicform" method="POST" action="<?php echo base_url('latino/emitir')?>" enctype="multipart/form-data">
 								<div class="frm" id="part1"> 
 									<fieldset>
-										<legend><div id="title">Parte 1 de 4</div></legend>
+										<legend><div id="title">Parte 1 de 3</div></legend>
 									<div class="row select" >
 								        <div class= "col-md-3">
 											<div class="form-group">
@@ -91,8 +112,12 @@
 											</div>
 
 										</div>
+
+										<img src="<?php echo base_url('assets/images/30.gif')  ?>" id="loading"> 
 								 </div>
-								 <img src="<?php echo base_url('assets/images/load/30.gif')  ?>" id="loading">
+
+								 
+
 								 <div class='row'>
 								 <div class="col-md-12">
 												<div class="form-group	">
@@ -136,96 +161,190 @@
 													</div>
 												</div>
 
-										<div class="col-md-6">
-										<div class="form-group">
-										<select class="custom-select my-1" id="cp">
-											<option value="">* Selecciona codigo postal</option>
-											<?php
-											  foreach($datacolonia as $value)
-											  {
-                                                 echo "<option value='$value->idcolonia'>$value->cp $value->nombrecolonia</option>";
-											  }
-											?>
-										</select>
-										</div>
-										</div>
-
+									</div>
+									<div class="row">
                                         <div class="form-group">
                                     	<div class="col-md-3">
-                                    		<button type="button" class="btn next">Siguinete <i class="fa fa-arrow-right"></i></button>
+                                    		<button type="button" class="btn btn1 next" style="transition: 1s;" id="cotizar">Siguinete <i class="fa fa-arrow-right"></i></button>
 										</div>
 										</div>
 
+										</div>
+                                          
 									</fieldset>
 								</div>
 
                            <!--- parte 2 -->
 
 								<div class="frm" id="part2">
-									<legend><div id="title">Parte 2 de 4</div></legend>
+									<legend><div id="title">Parte 2 de 3</div></legend>
 									<fieldset>
 										<br>
 									<h5><i class="fa fa-user"></i> Datos del asegurado</h5>
 									<div class="row">
+
 										<div class="col-md-4">
 											<div class="form-group">
 												<input type="text" class="form-control" name="nombre" id="nombre" placeholder=" * Nombres" required>
+												<span style="color: red;"><?php echo form_error('nombre');?></span>
 											</div>
 										</div>
-										<div class="col-md-4">
+
+										<div class="col-md-3">
 											 <div class="form-group">
-												<input type="text" name="apllidop" id="apellidop" class="form-control" placeholder=" * Apellido paterno" required>
+												<input type="text" name="apellidop" id="apellidop" class="form-control" placeholder=" * Apellido paterno" required>
+												<span style="color: red;"><?php echo form_error('apellidop');?></span>
 											</div>
 											</div>
-										<div class="col-md-4">
+
+										<div class="col-md-3">
 											<div class="form-group">
 												<input type="text" name="apellidom" id="apellidom" class="form-control" placeholder=" * Appelido materno" required>
+												<span style="color: red;"><?php echo form_error('apellidom');?></span>
 											</div>
 										</div>
-									</div>
+
+										<div class="col-md-2">
+											<div class="fomr-group">
+											<input type="text" name="rfc" id="rfc" class="form-control" placeholder="* RFC" required>
+											<span style="color: red;"><?php echo form_error('rfc');?></span>
+											</div>
+										</div>
+
+							
+								</div>
 
 									<div class="row">
+
 										<div class="col-md-4">
 											<div class="from-group">
 											<input type="date" name="fechanacimiento" id="fechanacimiento" class="form-control" required>
+											<span style="color: red;"><?php echo form_error('fechanacimiento');?></span>
 											</div>
-										</div>
-										<div class="col-md-4">
-											<div class="fomr-group">
-											<input type="text" name="RFC" id="rfc" class="form-control" placeholder="* RFC" required>
-											</div>
-										</div>
-										<div class="col-md-4">
+									    </div>
+
+										<div class="col-md-3">
 											<div class="form-group">
-											<select name="listgenero" id="listgenero" class="custom-select">
-												<option value="">* GENERO</option>
+											<select name="genero" id="genero" class="custom-select form-control" required>
+												<option value="">GENERO</option>
 												<option >Hombre</option>
 												<option >Mujer</option>
 											</select>
+											<span style="color: red;"><?php echo form_error('genero');?></span>
 											</div>
 										</div>
+
+										<div class="col-md-3">
+											<div class="form-group">
+											<input type="email" name="email" id="email" class="form-control" placeholder="Correo" >
+											<span style="color: red;"><?php echo form_error('email');?></span>
+											</div>
+										</div>
+
+										<div class="col-md-2">
+											<div class="form-group">
+											<input type="text" name="tel" id="tel" class="form-control" placeholder=" Telefono" required>
+											<span style="color: red;"><?php echo form_error('tel');?></span>
+											</div>
+										</div>
+
+
 									</div>
 
 									<div class="row">
 										<div class="col-md-4">
 											<div class="form-group">
-											<input type="text" name="correo" id="correo" class="form-control" placeholder="Correo">
+												<input type="text" id="direccion" name="direccion" class="form-control" placeholder="Calle" required>
+												<span style="color: red;"><?php echo form_error('direccion');?></span>
 											</div>
 										</div>
-										<div class="col-md-4">
+
+										<div class="col-md-2">
 											<div class="form-group">
-											<input type="text" name="cel" id="cel" class="form-control" placeholder="* Telefono">
+												<input type="number" name="numero" id='numero' class="form-control"  required>
+												<span style="color: red;"><?php echo form_error('numero');?></span>
+											</div> 
+										</div>
+
+										<div class="col-md-2">
+											<div class="form-group">
+												<input type="text" id="codigoPostal" name="codigoPostal" class="form-control" placeholder="Codigo postal" required>
+												<span style="color: red;"><?php echo form_error('codigoPostal');?></span>
 											</div>
 										</div>
-										<div class="col-md-4">
+
+										<div class="col-md-3">
 											<div class="form-group">
-												<select name="listocupacion" id="listocupacion" class="custom-select">
-													<option value="">* OCUPACION</option>
-													
+												<select class="custom-select form-control" name="colonia" id="colonia" required="">
+													<option value="">Selecciona Colonia</option>
 												</select>
+												<span style="color: red;"><?php echo form_error('colonia');?></span>
+											</div>
+										</div>	
+									   <!--	<div class="col-md-4">
+											<div class="form-group">
+												<input type="date" >
+											</div>
+										</div>-->
+									</div>
+
+									<br>
+									<h5>
+										<i class="fa fa-car fa-1x"></i>
+										Informacion de vehículo 
+									</h5>
+
+									<div class="row">
+
+										<div class="col-md-4">
+											<div class="form-group">
+											<input type="text" id="serie" name="serie" class="form-control" placeholder="Serie de vihículo" required>	
+											<span style="color: red;"><?php echo form_error('serie');?></span>
+											</div>
+										</div>
+
+										<div class="col-md-4">
+											<div class="form-group">
+												<input type="text" id="placa" name="placa" class="form-control" placeholder="Placas" required>
+												<span style="color: red;"><?php echo form_error('placa');?></span>
+											</div>
+										</div>
+
+										<div class="col-md-4">
+											<div class="form-group">
+												<input type="text" id="numeroMotor" name="numeroMotor" class="form-control" placeholder="Numero del Motor" required>
+												<span style="color: red;"><?php echo form_error('numeroMotor');?></span>
 											</div>
 										</div>
 									</div>
+
+									<div class="row">
+										<div class="col-md-6">
+											<div class="form-group">
+												<input type="text" id="conductor" name="conductor" class="form-control" placeholder="Nombre del conductor" required>
+												<span style="color: red;"><?php echo form_error('conductor');?></span>
+											</div>
+										</div>
+									</div>
+
+									<button type="button" class="btn btn1  back" >
+										<i class="fa fa-arrow-left"></i>
+										Anterior
+									</button>
+									<button type="submit" class="btn btn-primary emitir" >
+                                         Emitir
+										<i class="fa fa-pencil" ></i>
+									</button>
+
+									<img src="<?php echo base_url('assets/images/load.gif')  ?>" id="write"> 
+
+									<input type="text" name="camposPoliza" id="camposPoliza" class="form-control" style="
+										width: 13%;
+							            position: absolute;
+							            margin-left: 550px;">
+
+							            <input type="text" name="cliente" id="cliente" class="form-control" style="width: 13%;">
+
 									</fieldset>
 								</div>
 									</form>
@@ -263,7 +382,41 @@ jQuery().ready(function () {
 			year: "required",
 			marca: "required",
 			submarca : "required",
-			descripcion: "required"
+			descripcion: "required",
+			nombre: "required",
+			apellidop: "required",
+			apellidom: "required",
+			fechanacimiento: "required",
+			genero: "required",
+			direccion: "required",
+			colonia: "required",
+			serie: "required",
+			placa: "required",
+			numero: "required",
+			numeroMotor:  "required",
+			conductor: "required",
+			codigoPostal: {
+               required: true,
+               digits:  true,
+               maxlength: 5,
+               minlength: 5
+			},
+			rfc: {
+				required: true,
+				maxlength: 13,
+				minlength: 10
+			},
+			email: {
+				email: true
+			},
+			tel: {
+              required: true,
+              digits: true,
+              maxlength: 10,
+              minlength: 10
+			},
+
+
 		},
 		messages: {
 			package: "Campo requerido",
@@ -273,19 +426,65 @@ jQuery().ready(function () {
 			marca: "Campo requerido",
 			submarca : "Campo requerido",
 			descripcion: "Campo requerido",
-			
-			
+			nombre: "Campo requerido",
+			apellidop: "Campo  requerido",
+			apellidom: "Campo  requerido",
+			fechanacimiento: "Campo requerido",
+			genero: "Campo  requerido",
+			direccion: "Campo requerido",
+			colonia: "Campo requerido",
+			serie: "Campo requerido",
+			placa: "Campo  requerido",
+			numeroMotor: "Campo requirido",
+			conductor: "Campo requerido",
+			numero: "Campo requerido",
+
+			codigoPostal:{
+              required: "Campo requerido",
+              digits: "Solo números",
+              maxlength: "5 digitos",
+              minlength: "5 digitos"
+			},
+			rfc:{
+				required: "Campo requirido",
+				maxlength: "13 caracteres",
+				minlength: "13 caracteres"
+			},
+			email:{
+				email: "correo invalido"
+			},
+			tel:{
+				required: "Campo requerido",
+				digits: "Solo números",
+				maxlength: "10 digitos",
+				minlength: "10 digitos"
+			}
 		},
 		errorElement: "span",
 		errorClass: "help-inline-error",
 	});
 
+// next
 	$(".next").click(function () {
             if (v.form()) {
-                $(".frm").fadeOut();
-                $("#part2").fadeIn();
+                $(".frm").hide('fast');
+                $("#part2").show('slow');
             }
         });
+
+	$(".emitir").click(function(){
+		 if(v.form()){
+		 	$('#loader').show();
+		 }
+	})
+
+
+	// back
+	$('.back').click(function(){
+		$('.frm').hide('fast');
+		$('#part1').show('slow');
+	})
+
 
 });
 </script>

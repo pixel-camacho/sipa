@@ -593,6 +593,7 @@
                 })
             }
         });
+        
         $("#idcolonia").keyup(function (e) {
             var dat = $("#idcolonia").val();
             if (dat.length === 5) {

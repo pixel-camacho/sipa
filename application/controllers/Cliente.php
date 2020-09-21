@@ -24,6 +24,7 @@ class Cliente extends CI_Controller {
         $this->load->model('cliente_model', 'cliente');
         $this->load->library('permission');
         $this->load->library('nusoap');
+        $this->load->library('format');
 	    
         }
 
@@ -102,8 +103,6 @@ class Cliente extends CI_Controller {
 		   curl_close($curl);
 		   $decoded = json_decode($curl_response);
 		   
-		  
-
 
         $datospoliza = array(
             'asegurado' =>$decoded[0] ->asegurado,
@@ -334,9 +333,10 @@ class Cliente extends CI_Controller {
     public function adjunto ($solicitudId,$idcliente)
     {
 
-
-
        $this->load->library('pdf');
+
+       
+
         $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
         $post_data = ['solicitudId' => $solicitudId];
 
@@ -396,61 +396,53 @@ class Cliente extends CI_Controller {
 
     }
 
-    public function test ($solicitudId,$idcliente)
+    public function test ()
     {
-        $this->load->library('pdf');
 
-        $post_data = ['solicitudId' => $solicitudId];
-        $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/autorizacionDescuento.php';
-         $curl = curl_init();
+    
+     //$documento = implode($pdf);
+     //$poliza = substr($documento, 0,-1);
+    //  header('Content-type: application/pdf');
 
-            curl_setopt($curl, CURLOPT_URL, $service_url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $post_data);
+     //echo base64_decode($pdf['ByteArray']) ;
 
-    $curl_response = curl_exec($curl);
+    // $code = base64_encode($poliza);
 
-        if($curl_response === false)
-        {
-            $info = curl_getinfo($curl);
-                    curl_close($curl);
-                    die('error occured during curl exec. Additional: '.var_export($info));
-        }
-          curl_close($curl);
+     //echo base64_decode($code);
 
-          $data = json_encode($curl_response,true);
+     // header('Content-type: application/pdf');
+      //header('Content-Disposition: attachment; filename="service.pdf"');
+    // var_dump(base64_decode($byte_string));
 
-       /*--------------------------------------------------------*/
+      
+    /*    $this->load->library('pdf');
 
-          $post_data = ['idcliente' => $idcliente];
-          $service_url = 'http://190.9.53.22:8484/appsipaapi/cliente/countSeguros.php';
-          $curl1 = curl_init();
+        $this->pdf->generarPdf('cliente/reportes/pago');*/
+ //  echo date('Y/m/d'); 
+     // echo   date('d/m/Y', strtotime('+364 days'));
 
-            curl_setopt($curl1, CURLOPT_URL, $service_url);
-            curl_setopt($curl1, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl1, CURLOPT_POST, true);
-            curl_setopt($curl1, CURLOPT_POSTFIELDS, $post_data);
+   /*   // Load library date('d/m/Y', strtotime('+1 years'));
+    $this->load->library('zend');
+    // Load in folder Zend
+    $this->zend->load('Zend/Barcode');
+    // Generate barcode
+    Zend_Barcode::render('code128', 'image', array('text'=>'23423434234'), array());
 
-    $curl_response1 = curl_exec($curl1);
+      // $this->barcode->barcode('7847989437589','horizontal','code128',2);
+        
+      /*  $datos = 'MARIA EULALIA BAÑALES PEREZ'.'-'.'9710011369';
+        $codigoQr = 'http://190.9.53.22:8484/sipa/gmm/'.$datos;
+        $this->generarQr($codigoQr,'MARIA EULALIA BANALES PEREZ'.'.png');
+            
+            if(file_exists('assets/images/QR/MARIA EULALIA BAÑALES PEREZ.png')){
+               echo "existe";
+            }else
+            {
+              echo "no existe";
+            }*/
 
-        if($curl_response === false)
-        {
-            $info = curl_getinfo($curl1);
-                    curl_close($curl1);
-                    die('error occured during curl exec. Additional: '.var_export($info));
-        }
-          curl_close($curl1);
-
-          $seguros = json_decode($curl_response1,true);
-
-          $info = ['data' => $data,
-                   'seguros' => $seguros];
-
-
-
-          $this->pdf->generarPdf('cliente/reportes/pago',$info);
-
+        
+        
     }
 
     public function pagoViaNomina($solicitudId){

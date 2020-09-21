@@ -1,6 +1,10 @@
 $(document).ready(function()
 {
     $('#loading').hide();
+    $('#write').hide();
+    //$('#data').hide();
+    $('#emitir').attr('disabled','disabled');
+
 
     $('#listaseguro').attr('disabled','disabled');
     $('#listamarca').attr('disabled','disabled');
@@ -10,6 +14,8 @@ $(document).ready(function()
     $('#listyear').attr('disabled','disabled');
     $('#listPago').attr('disabled', 'disabled');
     $('#listDescuento').attr('disabled', 'disabled');
+
+    $('.next').attr('disabled','disabled');
 
 
 
@@ -79,35 +85,160 @@ $(document).ready(function()
 
      });
 
+     $('#listDescuento').change(()=>{
+        $('.next').removeAttr('disabled');
+     })
 
 
-   /*  $('#listdescripcion').change(()=>
-     {
-      let modelo      = $('#listyear').find('option:selected').val();
-      let marca       = $('#listamarca').find('option:selected').val();
-      let submarca    = $('#listasubmarca').find('option:selected').val();
-      let descripcion = $('#listdescripcion').find('option:selected').val();
-      let paquete     = $('#listpackage').find('option:selected').val();
-      let estado      = $('#listastate').find('option:selected').val();
-      let data        = `modelo=${modelo}&marca=${marca}&submarca=${submarca}&descripcion=${descripcion}&paquete=${paquete}$estado=${estado}`;
-      testCall('http://190.9.53:22:8484/sipa/latino/getCoverage',data);
-     });*/
+      $('#codigoPostal').focusout(function(){
 
-     $('#listDescuento').change(()=>
-      {
-      let modelo      = $('#listyear').find('option:selected').val();
-      let marca       = $('#listamarca').find('option:selected').val();
-      let submarca    = $('#listasubmarca').find('option:selected').val();
-      let descripcion = $('#listdescripcion').find('option:selected').val();
-      let paquete     = $('#listpackage').find('option:selected').val();
-      let estado      = $('#listastate').find('option:selected').val();
-      let tipoPago    = $('#listPago').find('option:selected').val();
-      let descuento   = $('#listDescuento').find('option:selected').val();
-      let data = `modelo=${modelo}&marca=${marca}&paquete=${paquete}&submarca=${submarca}&estado=${estado}&descripcion=${descripcion}&tipoPago=${tipoPago}&descuento=${descuento}`;
-       testCall('http://190.9.53.22:8484/sipa/latino/getQuote',data);
+        let cp = $('#codigoPostal').val();
+        let data = `codigopostal=${cp}`;
+        
+        callLatino('colonia','http://190.9.53.22:8484/sipa/latino/getColonias','Selecciona colonia',data);  
       });
 
+
+
+     $('#listDescuento').change(function(){
+
+        let url         = 'http://190.9.53.22:8484/sipa/latino/getQuote';
+        let modelo      = $('#listyear').find('option:selected').val();
+        let marca       = $('#listamarca').find('option:selected').val();
+        let submarca    = $('#listasubmarca').find('option:selected').val();
+        let descripcion = $('#listdescripcion').find('option:selected').val();
+        let paquete     = $('#listpackage').find('option:selected').val();
+        let estado      = $('#listastate').find('option:selected').val();
+        let tipoPago    = $('#listPago').find('option:selected').val();
+        let descuento   = $('#listDescuento').find('option:selected').val();
+        let data = `modelo=${modelo}&marca=${marca}&paquete=${paquete}&submarca=${submarca}&estado=${estado}&descripcion=${descripcion}&tipoPago=${tipoPago}&descuento=${descuento}`;
+           
+           if ($('#data').val() != null || $('#data').val() == '')
+           {
+               $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    dataType: 'html',
+                    success: function(response)
+                     {
+                      $('#data').val(response.trim());
+                     }
+                      })
+            }
 });
+
+     $('#genero').change(function(){
+       
+       let url        = 'http://190.9.53.22:8484/sipa/latino/saveQoute';
+       let nombre     = $('#nombre').val();
+       let apPaterno  = $('#apellidop').val();
+       let apMaterno  = $('#apellidom').val();
+       let cotizacion = $('#data').val();
+
+       let data = `nombre=${nombre}&apPaterno=${apPaterno}&apMaterno=${apMaterno}&cotizacion=${cotizacion}`;
+
+       $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        dataType: 'html',
+        success: function(response)
+        {
+          $('#camposPoliza').val(response.trim());
+        }
+
+       })
+
+     });
+
+     $('#colonia').change(function(){
+
+      let url         = 'http://190.9.53.22:8484/sipa/latino/addCliente';
+      let nombre      = $('#nombre').val();
+      let apPaterno   = $('#apellidop').val();
+      let apMaterno   = $('#apellidom').val();
+      let nacimiento  = $('#fechanacimiento').val();
+      let rfc         = $('#rfc').val();
+      let calle       = $('#direccion').val();
+      let numero      = $('#numero').val();
+      let colonia     = $('#colonia').val();
+      let cp          = $('#codigoPostal').val();
+
+      let data = `nombre=${nombre}&apPaterno=${apPaterno}&apMaterno=${apMaterno}&nacimiento=${nacimiento}&rfc=${rfc}&calle=${calle}&numero=${numero}&colonia=${colonia}&cp=${cp}`;
+
+      $.ajax({
+        type: 'POST',
+        url: url,
+        data: data,
+        dataType: 'html',
+        success: function(response){
+
+          $('#cliente').val(response.trim());
+        }
+      }) 
+     })
+
+
+     $('.emitir').click(function(e){
+
+       $("#btnaceptar").prop("disabled", true);
+       e.preventDefault();
+       var  form = $("#basicform").serialize();
+
+       $.ajax({
+        type: 'POST',
+        url: "http://190.9.53.22:8484/sipa/latino/emitir",
+        data: form,
+        dataType: 'html',
+        beforeSend: ()=> $('#write').show(),
+        complete: ()=> $('#write').hide(),
+        success: function(response){
+
+          let error = response.substr(6);
+          
+          if(response.indexOf('error') == 0)
+          {
+
+            swal({
+          title:'Error',
+          text: error,
+          type: 'error',
+          showCancelButton: false,
+            confirmButtonColor: '#3085d6',
+        confirmButtonText: 'ACEPTAR'
+        }).then((result) =>{
+          if(result.value)
+          {
+            
+          }
+        })
+
+          }else if(response.indexOf('ok') ==0)
+          {
+
+            swal({
+          title:'Exitosa',
+          text:'poliza generada',
+          type:'success',
+          showCancelButton: false,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'ACEPTAR'
+        }).then((result) =>{
+          if(result.value)
+          {
+           
+          }
+        })
+
+          }
+    }
+
+       })
+
+     })
+
+
 
 function callLatino(list,url,message,data = null)
 {
@@ -147,3 +278,4 @@ function testCall(url,data=null)
       });
 
     }
+});

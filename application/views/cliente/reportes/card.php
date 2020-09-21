@@ -92,15 +92,16 @@
 
 	<style type="text/css">
 		#asegurados {
+			position: absolute;
 			color: black;
-			font-size: 35px;
-			top: 110px;
-			left: 10px;
+			font-size: 34px;
+			top: 250px;
+			left: 0px;
 		}
 		#qr{
 			position: absolute;
-			top: 180px;
-			right: 5px;
+			top: 245px;
+			right: 0px;
 			width: 300px;
 			height: 300px;
 		}
@@ -110,8 +111,6 @@
 	<ul id="asegurados">
 			<li id="asegurado" >
 
-				
- 
 				<?php if($cantidad == 1) { ?>
 				<span>
 					<?php echo $nombre.'<br>'.$asegurado;?>	

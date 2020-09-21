@@ -534,6 +534,7 @@
 
 <!--Autorizacion DE DESCUENTO-->
 <style type="text/css">
+
 			body{ 
 			font-family: 'Gadugi','Calibri'; 
 			font-size: 12px;
@@ -545,10 +546,16 @@
             background-position: center;
 		}
 
+
+		 .big-box{
+		 	width: 100vh;
+		 	height: 980px;
+		 }
+
 		.header{
 			width: 100%;
 			height: 80px;
-			position: absolute;
+		    position: absolute;	
 		}
 
 		  #logoLeft{
@@ -777,10 +784,6 @@
 		 	width: 50%;
 		 }	
 
-		 .big-box{
-		 	width: 100vh;
-		 	height: 950px;
-		 }
 
 </style>
 
@@ -921,89 +924,18 @@
         	<hr>
         	<hr>
         	<hr>
+
         </div>
         </div>
        </div>
 
-
-
-
-
-
-<style type="text/css">
-	.card02{
-		width: 100vh;
-		height: 950px;
-		background: #fff;
-	}
-
-	.card02 img{
-        vertical-align: middle;
-		width: 100%;
-		height: 400px;
-		border-radius: 15px;
-		display: block;
-	}
-
-	.card02 ul {
-		position: absolute;
-        top: 100px;
-        left: 10px;
-        margin: 0px;
-        font-size: 18px;
-        color:#f8f8f8;  
-        list-style: none;
-        font-family: Impact, Charcoal, sans-serif;
-        font-weight: bolder;
-	}
-
-	#qr{
-			position: absolute;
-			top: 110px;
-			right: 10px;
-			width: 205px;
-			height: 205px;
-			border-radius: 10px;
-			opacity: .7;
-			border:solid;
-		}
-
-		#tracera{
-			margin-top: 50px;
-			width: 100%;
-			height: 400px;
-			border-radius: 15px;
-			display: block;
-		}
-
-</style>
-
- <div class="card02">
- 	<img src="assets/images/card/Frente.png">
- 	<ul>
- 		<?php foreach($data as $clave => $value) { ?>
- 		<li><?php echo $value['beneficiarios'].'<br>';?></li>
- 		<?php } ?>
- 		<br>
-		<span>Políza GMM <?php echo $data[0]['noPoliza']; ?></span>
-		<br>
-		<span id="title010">Antiguedad <?php echo $data[0]['antiguedad'];?> </span>
- 	</ul>
- 	<?php 
-        echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
-        ?>
-
-	<img src="assets/images/card/Trasera.png" id="tracera"  alt="card-trasera"> 
- 	
- </div>
+    <!-- DESCUENTO ISE -->
 
  <style type="text/css">
 
  	.formato4{
  		width: 100vh;
  		height: 950px;
- 		margin-top: 40px;
- 		font-size: 15px;
  	}
 
 	 .formato4 h3{
@@ -1118,15 +1050,14 @@ contraídos.
 	<b id="spanLast">Dependencia</b>
 	<br>
  </div>
+</div>
 
 <?php } ?>
 
-
-<!-- domino -->
+<!-- domiciliación -->
 
 <style type="text/css">
 	.formato03{
-		margin-top: 25px;
 		width: 100vh;
 		height: 990px;
 	}
@@ -1158,15 +1089,15 @@ contraídos.
     	font-weight: bold;
     	font-family: 'Arial'; 
     	font-size: 15px;
-        left: 280px;
-        bottom: 920px;
+        left: 230px;
+        top: 0px;
     }
 
     #title, #title1, #title2{
     	position: absolute;
     	background: #d9d9d9;
+    	border: 1px solid rgba(0,0,0,.8);
     	text-align: center;
-    	border: 1px solid rgba(0,0,0,0,.8);
     	width: 200px;
     	height: 20px;
     	font-size: 12px;
@@ -1208,7 +1139,7 @@ contraídos.
    #campo2{
    	left: 602px;
    	width: 100px;
-   	top: 25px;
+   	top: 0px;
   
    }
 
@@ -1248,7 +1179,7 @@ contraídos.
    }
    
    #title11{
-   	top: 405px;
+   	top: 380px;
    }
 
 
@@ -1266,7 +1197,7 @@ contraídos.
 
    #campo10{
    	width: 40%;
-   	top: 405px;
+   	top: 380px;
    }
 
    #title12{
@@ -1274,7 +1205,7 @@ contraídos.
    }
 
    #title13{
-   	top: 450px;
+   	top: 425px;
    	width: 40%;
    	left: 60%;
    }
@@ -1286,7 +1217,7 @@ contraídos.
 
    #campo112{
    	position: absolute;
-   	top: 476px;
+   	top: 451px;
    	border: 1px solid rgba(0,0,0,.7);
    	text-align: center;
    	font-size: 13px;
@@ -1513,7 +1444,7 @@ contraídos.
      	font-size: 13px;
      	left: 253px;
      	height: 20px;
-     	top: 888px;
+     	top: 862px;
         font-weight: bold;
      }
 
@@ -1542,7 +1473,7 @@ contraídos.
 
      #campo22{
      	position: absolute;
-     	top:914px;
+     	top:888px;
      	height: 20px;
      	border: 1px solid rgab(0,0,0,.7);
         left: 253px;
@@ -1554,13 +1485,15 @@ contraídos.
      	width: 449px;
      	height: 20px;
      	left: 253px;
-     	top: 941px;
+     	top: 915px;
      	border: 1px solid rgba(0,0,0,.7);
      	text-align: center;
      	font-size: 13px;
      }
 
 </style>
+
+
 
 <?php 
   if($seguros[0]['claveId'] == 72 || $seguros[0]['claveId'] == 80 || $seguros[0]['claveId'] == 128 || $seguros[0]['claveId'] == 129) { ?>
@@ -1726,6 +1659,74 @@ contraídos.
 <?php } ?>
 
 
+<style type="text/css">
+
+	.card02{
+		width: 100vh;
+		height: 950px;
+		background: #fff;
+	}
+
+	.card02 img{
+        vertical-align: middle;
+		width: 100%;
+		height: 400px;
+		border-radius: 15px;
+		display: block;
+	}
+
+	.card02 ul {
+		position: absolute;
+        top: 100px;
+        left: 10px;
+        margin: 0px;
+        font-size: 18px;
+        color:#f8f8f8;  
+        list-style: none;
+        font-family: Impact, Charcoal, sans-serif;
+        font-weight: bolder;
+	}
+
+	#qr{
+			position: absolute;
+			top: 110px;
+			right: 10px;
+			width: 205px;
+			height: 205px;
+			border-radius: 10px;
+			opacity: .7;
+			border:solid;
+		}
+
+		#tracera{
+			margin-top: 50px;
+			width: 100%;
+			height: 400px;
+			border-radius: 15px;
+			display: block;
+		}
+
+</style>
+
+<div class="card02">
+ 	<img src="assets/images/card/Frente.png">
+ 	<ul>
+ 		<?php foreach($data as $clave => $value) { ?>
+ 		<li><?php echo $value['beneficiarios'].'<br>';?></li>
+ 		<?php } ?>
+ 		<br>
+		<span>Políza GMM <?php echo $data[0]['noPoliza']; ?></span>
+		<br>
+		<span id="title010">Antiguedad <?php echo $data[0]['antiguedad'];?> </span>
+ 	</ul>
+ 	<?php 
+        echo "<img id='qr' src='assets/images/QR/".$nombre.".png' alt='noo!'>";
+        ?>
+	<img src="assets/images/card/Trasera.png" id="tracera"  alt="card-trasera"> 
+ </div>
+
+
+
 <?php if($seguros[0]['poliza2020'] != null) { ?>
 
 <style type="text/css">
@@ -1735,22 +1736,30 @@ contraídos.
 </style>
 
 <div class="polizas2020">
-	<?php $pictures = count(glob('{*.jpg}',GLOB_BRACE));?>
-	<?php if($pictures == 2) { ?>
+	
       <img src="1.jpg" style="width: 100%; height: 950px;">
       <img src="2.jpg" style="width: 100%; height: 950px;">
-    <?php } ?>
-    <?php if($pictures == 3) { ?>
+      <img src="3.jpg" style="width: 100%; height: 950px;">
+      <img src="4.jpg" style="width: 100%; height: 950px;">
+      <img src="5.jpg" style="width: 100%; height: 950px;">
+      <img src="6.jpg" style="width: 100%; height: 950px;">
+      
+  <!--  
+    <?php $pictures = count(glob('{*.jpg}',GLOB_BRACE)); ?>
+
+   <?php if($pictures === 3) { ?>
     <img src="1.jpg" style="width: 100%; height: 950px;">
     <img src="2.jpg" style="width: 100%; height: 950px;">
     <img src="3.jpg" style="width: 100%; height: 950px;">
     <?php } ?>
-    <?php if($pictures == 4) {?>
+
+    <?php if($pictures === 4) { ?>
     <img src="1.jpg" style="width: 100%; height: 950px;">
     <img src="2.jpg" style="width: 100%; height: 950px;">
     <img src="3.jpg" style="width: 100%; height: 950px;">
     <img src="4.jpg" style="width: 100%; height: 950px;">
     <?php } ?>
+
     <?php if($pictures == 5) { ?>
     <img src="1.jpg" style="width: 100%; height: 950px;">
     <img src="2.jpg" style="width: 100%; height: 950px;">
@@ -1758,6 +1767,8 @@ contraídos.
     <img src="4.jpg" style="width: 100%; height: 950px;">
     <img src="5.jpg" style="width: 100%; height: 950px;">
     <?php } ?>
+
+    
     <?php if($pictures == 6) { ?>
     <img src="1.jpg" style="width: 100%; height: 950px;">
     <img src="2.jpg" style="width: 100%; height: 950px;">
@@ -1784,7 +1795,7 @@ contraídos.
     <img src="6.jpg" style="width: 100%; height: 950px;">
     <img src="7.jpg" style="width: 100%; height: 950px;">
     <img src="8.jpg" style="width: 100%; height: 950px;">
-    <?php } ?>
+    <?php } ?> -->
 </div>
 <?php } ?>
 </body>
