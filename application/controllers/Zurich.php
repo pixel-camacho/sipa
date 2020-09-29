@@ -5,10 +5,10 @@ class zurich extends CI_Controller
 {
 
 	//credenciales
-	var $agente     = 99181;
-	var $oficina    = 83;
-	var $noRelacion = 43005022;
-	var $usuario    = 'PROTE83129ws';
+	var $agente     = xxxxx;
+	var $oficina    = xx;
+	var $noRelacion = xxxxxxxxx;
+	var $usuario    = 'XXXXXXXXXXXX';
 	//ligas
 	var $catalogos = 'http://pruebas.autolinea.ezurich.com.mx/ZurichWS_QA/autos/consultaCatalogosAutos/publicService?wsdl';
 	var $ubicacion = 'http://pruebas.autolinea.ezurich.com.mx/ZurichWS_QA/catalogos/obtenerCatEstMunAsentCp/publicService?wsdl';
