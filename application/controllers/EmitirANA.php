@@ -4,50 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 //Load libruary for API
 class EmitirANA extends CI_Controller {
-   /* 
-    var $url = "https://server.anaseguros.com.mx/ananetws/service.asmx?WSDL";
-    var $negocio = 1202;
-    var $usuario = "06933";
-    var $clave = "mR2bzaPb";
-    //Usuario Amplia y Limitada Tarjeta de Credito
-    var $negocio_cobro_normal = 1327;
-    var $usuario_cobro_normal = "06933";
-    var $clave_cobro_normal = "mR2bzaPb";
-    //Usuario RC BC Tarjeta de Credito
-    var $negocio_cobro_rc = 1329;
-    var $usuario_cobro_rc = "06933";
-    var $clave_cobro_rc = "7RacaPz4";
-    //Usuario RC BC de Pago Referenciado
-    var $negocio_cobro_rc_referenciado = 1328;
-    var $usuario_cobro_rc_referenciado = "06933";
-    var $clave_cobro_rc_referenciado = "7RacaPz4";
-    //Usuario Amplia y Limitada Transferencia
-    var $negocio_cobro_normal_referenciado = 1326;
-    var $usuario_cobro_normal_referenciado = "06933";
-    var $clave_cobro_normal_referenciado = "mR2bzaPb";
-    */
-    
-    var $url = "https://server.anaseguros.com.mx/ananetws/service.asmx?WSDL";
-    var $negocio = 1202;
-    var $usuario = "06933";
-    var $clave = "mR2bzaPb";
-    //Usuario Amplia y Limitada Tarjeta de Credito
-    var $negocio_cobro_normal = 1202;
-    var $usuario_cobro_normal = "06933";
-    var $clave_cobro_normal = "mR2bzaPb";
-    //Usuario RC BC Tarjeta de Credito
-    var $negocio_cobro_rc = 1269;
-    var $usuario_cobro_rc = "06933";
-    var $clave_cobro_rc = "7RacaPz4";
-    //Usuario RC BC de Pago Referenciado
-    var $negocio_cobro_rc_referenciado = 1268;
-    var $usuario_cobro_rc_referenciado = "06933";
-    var $clave_cobro_rc_referenciado = "7RacaPz4";
-    //Usuario Amplia y Limitada Transferencia
-    var $negocio_cobro_normal_referenciado = 1201;
-    var $usuario_cobro_normal_referenciado = "06933";
-    var $clave_cobro_normal_referenciado = "mR2bzaPb";
-
+  
     function __construct() {
 		
         parent::__construct();
