@@ -4,13 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class latino extends CI_controller
 {
 
-	var $url ="https://servintd.latinoseguros.com.mx:8070/wsCotizadorAutosQA/Cotizador/CotizadorLatino.svc?WSDL";
+	var $url ="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX;
 
 	//Credencial Web Services.
-	var $idApp = 10054;
-	var $passApp = "CD77ED53SPROT";
-	var $claveUsuario = "7753";
-  var $password = "WS7753PROT";
+	var $idApp = XXXX;
+	var $passApp = "XXXXXXXX";
+	var $claveUsuario = "XXXXXXX";
+  var $password = "XXXXXXXXXXX";
 
 	function __construct()
 	{
