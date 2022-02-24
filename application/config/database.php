@@ -75,11 +75,11 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '28duguer',
-	'database' => 'dbsipa',
-	'dbdriver' => 'mysqli',
+	'hostname' => '',
+	'username' => '',
+	'password' => '',
+	'database' => '',
+	'dbdriver' => '',
 	'dbprefix' => '',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
@@ -97,11 +97,11 @@ $db['default'] = array(
 
 $db['second'] = array(
     'dsn'   => '',
-    'hostname' => 'localhost',
-    'username' => 'root',
-    'password' => '28duguer',
-    'database' => 'dbsim',
-    'dbdriver' => 'mysqli',
+    'hostname' => '',
+    'username' => '',
+    'password' => '',
+    'database' => '',
+    'dbdriver' => '',
     'dbprefix' => '',
     'pconnect' => TRUE,
     'db_debug' => (ENVIRONMENT !== 'production'),
